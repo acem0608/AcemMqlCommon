@@ -10,7 +10,8 @@
 class CAcemQuickLine
 {
 private:
-
+    long m_time;
+    double m_price;
 public:
     CAcemQuickLine();
     ~CAcemQuickLine();
@@ -33,14 +34,17 @@ public:
 //|                                                                  |
 //+------------------------------------------------------------------+
 CAcemQuickLine::CAcemQuickLine()
-  {
-  }
+{
+    m_time = 0;
+    m_price = 0.0;
+}
+
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
 CAcemQuickLine::~CAcemQuickLine()
-  {
-  }
+{
+}
 //+------------------------------------------------------------------+
 
 bool CAcemQuickLine::init()
