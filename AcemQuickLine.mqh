@@ -124,13 +124,13 @@ bool CAcemQuickLine::OnKeyDown(int id, long lparam, double dparam, string sparam
     if (lparam == 72) {
         string objName = getHlineName();
         ObjectCreate(ChartID(), objName, OBJ_HLINE, 0, m_time, m_price);
-        WindowRedraw();
+        ChartRedraw(ChartID());
         m_price = 0.0;
         m_time = 0;
     } else if (lparam == 86) {
         string objName = getVlineName();
         ObjectCreate(ChartID(), objName, OBJ_VLINE, 0, m_time, m_price);
-        WindowRedraw();
+        ChartRedraw(ChartID());
         m_price = 0.0;
         m_time = 0;
     }
