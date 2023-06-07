@@ -12,6 +12,11 @@ class CAcemQuickLine
 private:
     long m_time;
     double m_price;
+    long m_vlineIndex;
+    long m_hlineIndex;
+
+    string getVlineName();
+    string getHlineName();
 public:
     CAcemQuickLine();
     ~CAcemQuickLine();
@@ -37,6 +42,8 @@ CAcemQuickLine::CAcemQuickLine()
 {
     m_time = 0;
     m_price = 0.0;
+    m_hlineIndex = 0;
+    m_vlineIndex = 0;
 }
 
 //+------------------------------------------------------------------+
@@ -114,11 +121,37 @@ bool CAcemQuickLine::OnChartEvent(int id, long lparam, double dparam, string spa
 
 bool CAcemQuickLine::OnKeyDown(int id, long lparam, double dparam, string sparam)
 {
+    if (lparam == 72) {
+        string objName = getHlineName();
+        ObjectCreate(ChartID(), objName, OBJ_HLINE, 0, m_time, m_price);
+        WindowRedraw();
+        m_price = 0.0;
+        m_time = 0;
+    } else if (lparam == 86) {
+        string objName = getVlineName();
+        ObjectCreate(ChartID(), objName, OBJ_VLINE, 0, m_time, m_price);
+        WindowRedraw();
+        m_price = 0.0;
+        m_time = 0;
+    }
     return true;
 }
 
 bool CAcemQuickLine::OnMouseMove(int id, long lparam, double dparam, string sparam)
 {
+    int windowNo;
+    datetime mouseTime;
+    double mousePrice;
+    if (!ChartXYToTimePrice(ChartID(), lparam, dparam, windowNo, mouseTime, mousePrice))
+    {
+        return false;
+        m_price = 0.0;
+        m_time = 0;
+    }
+    
+    m_price = mousePrice;
+    m_time = mouseTime;
+
     return true;
 }
 
@@ -162,3 +195,13 @@ bool CAcemQuickLine::OnChartChange(int id, long lparam, double dparam, string sp
     return true;
 }
 
+
+string CAcemQuickLine::getVlineName()
+{
+    return "VLine " + m_vlineIndex++;
+}
+
+string CAcemQuickLine::getHlineName()
+{
+    return "HLine " + m_hlineIndex++;
+}
