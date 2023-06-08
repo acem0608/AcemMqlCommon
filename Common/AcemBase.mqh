@@ -14,7 +14,7 @@ public:
     CAcemBase();
     ~CAcemBase();
 
-    bool OnChartEvent(int id, long lparam, double dparam, string sparam);
+    virtual bool OnChartEvent(int id, long lparam, double dparam, string sparam);
     virtual bool OnKeyDown(int id, long lparam, double dparam, string sparam);
     virtual bool OnMouseMove(int id, long lparam, double dparam, string sparam);
     virtual bool OnObjectCreate(int id, long lparam, double dparam, string sparam);
