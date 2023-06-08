@@ -20,14 +20,13 @@ private:
     CChartObjectTrend m_Tline;
     CChartObjectTrend* m_pTline;
 
-    string getNewObjName();
-    long m_hlineIndex;
-
     virtual bool OnKeyDown(int id, long lparam, double dparam, string sparam);
     virtual bool OnMouseMove(int id, long lparam, double dparam, string sparam);
     virtual bool OnChartClick(int id, long lparam, double dparam, string sparam);
 
     bool init(bool bDel);
+
+    string getNewObjName();
 public:
     CAcemQuickTline();
     ~CAcemQuickTline();
