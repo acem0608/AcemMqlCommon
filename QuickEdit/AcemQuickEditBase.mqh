@@ -68,7 +68,6 @@ protected:
     long m_time;
     double m_price;
 
-   void setMouseToTimePrice(long lparam, double dparam);
    string convettNumToStr05(long num);
 
 public:
@@ -76,9 +75,12 @@ public:
     ~CAcemQuickEditBase();
     
     virtual void init();
+    void setMouseToTimePrice(long lparam, double dparam);
     virtual bool OnChartEvent(int id, long lparam, double dparam, string sparam);
     virtual bool setDefalutProp(string objName);
     virtual bool isEditing() {return false;};
+
+    virtual bool OnMouseMove(int id, long lparam, double dparam, string sparam);
 };
 
 //+------------------------------------------------------------------+
@@ -109,7 +111,6 @@ bool CAcemQuickEditBase::OnChartEvent(int id, long lparam, double dparam, string
         break;
     case CHARTEVENT_MOUSE_MOVE:
         {
-            setMouseToTimePrice(lparam, dparam);
             OnMouseMove(id, lparam, dparam, sparam);
         }
         break;
@@ -156,6 +157,13 @@ bool CAcemQuickEditBase::OnChartEvent(int id, long lparam, double dparam, string
     default:
         break;
     }
+    return true;
+}
+
+bool CAcemQuickEditBase::OnMouseMove(int id, long lparam, double dparam, string sparam)
+{
+    setMouseToTimePrice(lparam, dparam);
+    
     return true;
 }
 

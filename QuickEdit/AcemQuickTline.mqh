@@ -29,10 +29,6 @@ private:
     CChartObjectTrend m_Tline;
     CChartObjectTrend* m_pTline;
 
-    virtual bool OnKeyDown(int id, long lparam, double dparam, string sparam);
-    virtual bool OnMouseMove(int id, long lparam, double dparam, string sparam);
-    virtual bool OnChartClick(int id, long lparam, double dparam, string sparam);
-
     bool init(bool bDel);
 
     string getNewObjName();
@@ -40,6 +36,10 @@ private:
 public:
     CAcemQuickTline();
     ~CAcemQuickTline();
+    
+    virtual bool OnKeyDown(int id, long lparam, double dparam, string sparam);
+    virtual bool OnMouseMove(int id, long lparam, double dparam, string sparam);
+    virtual bool OnChartClick(int id, long lparam, double dparam, string sparam);
 };
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -90,6 +90,8 @@ bool CAcemQuickTline::OnKeyDown(int id, long lparam, double dparam, string spara
 }
 bool CAcemQuickTline::OnMouseMove(int id, long lparam, double dparam, string sparam)
 {
+    CAcemQuickEditBase::OnMouseMove(id, lparam, dparam, sparam);
+
     if (m_pTline != NULL) {
         m_Tline.SetPoint(1, m_time, m_price);
         ChartRedraw(ChartID());

@@ -23,12 +23,13 @@ private:
     string getNewObjName();
     long m_vlineIndex;
 
-    virtual bool OnKeyDown(int id, long lparam, double dparam, string sparam);
     virtual bool setDefalutProp(string objName);
 
 public:
     CAcemQuickVline();
     ~CAcemQuickVline();
+
+    virtual bool OnKeyDown(int id, long lparam, double dparam, string sparam);
 };
 //+------------------------------------------------------------------+
 //|                                                                  |

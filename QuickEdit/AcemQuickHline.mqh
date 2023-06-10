@@ -22,11 +22,12 @@ protected:
     string getNewObjName();
     long m_hlineIndex;
 
-    virtual bool OnKeyDown(int id, long lparam, double dparam, string sparam);
-    virtual bool setDefalutProp(string objName);
 public:
     CAcemQuickHline();
     ~CAcemQuickHline();
+
+    virtual bool OnKeyDown(int id, long lparam, double dparam, string sparam);
+    virtual bool setDefalutProp(string objName);
 };
 //+------------------------------------------------------------------+
 //|                                                                  |

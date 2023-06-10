@@ -16,10 +16,12 @@ input eInputKeyCode KEY_DELETE = ACEM_KEYCODE_D;//　　削除キー
 class CAcemQuickDelete : public CAcemQuickEditBase
 {
 private:
-    virtual bool OnKeyDown(int id, long lparam, double dparam, string sparam);
+
 public:
   CAcemQuickDelete();
   ~CAcemQuickDelete();
+
+    virtual bool OnKeyDown(int id, long lparam, double dparam, string sparam);
 
 };
 //+------------------------------------------------------------------+
