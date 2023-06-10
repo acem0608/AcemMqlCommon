@@ -10,10 +10,21 @@
 
 #include <Acem/Common/AcemBase.mqh>
 
-#define ACEM_KEYCODE_ESC 27
+#define KEYCODE_ESC 27
 
 enum eInputKeyCode
 {
+    ACEM_KEYCODE_ESC = 27,// ESC
+    ACEM_KEYCODE_0 = 48, // 0
+    ACEM_KEYCODE_1 = 49, // 1
+    ACEM_KEYCODE_2 = 50, // 2
+    ACEM_KEYCODE_3 = 51, // 3
+    ACEM_KEYCODE_4 = 52, // 4
+    ACEM_KEYCODE_5 = 53, // 5
+    ACEM_KEYCODE_6 = 54, // 6
+    ACEM_KEYCODE_7 = 55, // 7
+    ACEM_KEYCODE_8 = 56, // 8
+    ACEM_KEYCODE_9 = 57, // 9
     ACEM_KEYCODE_A = 65, // A
     ACEM_KEYCODE_B = 66, // B
     ACEM_KEYCODE_C = 67, // C
@@ -67,6 +78,7 @@ public:
     virtual void init();
     virtual bool OnChartEvent(int id, long lparam, double dparam, string sparam);
     virtual bool setDefalutProp(string objName);
+    virtual bool isEditing() {return false;};
 };
 
 //+------------------------------------------------------------------+
