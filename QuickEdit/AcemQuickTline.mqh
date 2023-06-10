@@ -115,6 +115,7 @@ string CAcemQuickTline::getNewObjName()
 
     return objName;
 }
+
 bool CAcemQuickTline::setDefalutProp(string objName)
 {
     CAcemQuickEditBase::setDefalutProp(objName);
