@@ -64,14 +64,19 @@ enum eLineidth
 
 class CAcemQuickEditBase : public CAcemBase
 {
+private:
+
 protected:
     long m_time;
     double m_price;
+    string m_objNamePrefix;
+    long m_objNameIndex; 
 
-   string convettNumToStr05(long num);
-
+    string getNewObjName();
+    
 public:
     CAcemQuickEditBase();
+    CAcemQuickEditBase(string objPrefix);
     ~CAcemQuickEditBase();
     
     virtual void init();
@@ -81,6 +86,7 @@ public:
     virtual bool isEditing() {return false;};
 
     virtual bool OnMouseMove(int id, long lparam, double dparam, string sparam);
+   
 };
 
 //+------------------------------------------------------------------+
@@ -90,6 +96,16 @@ CAcemQuickEditBase::CAcemQuickEditBase()
 {
     m_time = 0;
     m_price = 0.0;
+    m_objNamePrefix = "";
+    m_objNameIndex = 0;
+}
+
+CAcemQuickEditBase::CAcemQuickEditBase(string objPrefix)
+{
+    m_time = 0;
+    m_price = 0.0;
+    m_objNamePrefix = objPrefix;
+    m_objNameIndex = 0;
 }
 
 //+------------------------------------------------------------------+
@@ -197,22 +213,12 @@ bool CAcemQuickEditBase::setDefalutProp(string objName)
     return true;
 }
 
-string CAcemQuickEditBase::convettNumToStr05(long num)
+string CAcemQuickEditBase::getNewObjName()
 {
-    string strNum;
+    string objName;
+    do {
+        objName = m_objNamePrefix + IntegerToString(m_objNameIndex++, 5, '0')+ " " + ACEM_IDENTIFER + " " + IntegerToString(ChartID());
+    } while (ObjectFind(ChartID(), objName) >= 0);
 
-    if (num > 9999)
-    {
-        strNum = num;
-    }
-    else
-    {
-        int digit1 = MathMod(num, 10);
-        int digit2 = MathMod(int(num / 10), 10);
-        int digit3 = MathMod(int(num / 100), 10);
-        int digit4 = MathMod(int(num / 1000), 10);
-        strNum = "0" + digit3 + digit2 + digit1;
-    }
-
-    return strNum;
+    return objName;
 }
