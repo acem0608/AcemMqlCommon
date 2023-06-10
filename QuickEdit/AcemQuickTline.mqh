@@ -17,6 +17,10 @@ input color TLINE_COLOR = 0x00FFFFFF;//　　色
 input ENUM_LINE_STYLE TLINE_STYLE = STYLE_SOLID;//　　線種
 input eLineidth TLINE_WIDTH = LINE_WIDTH_1;//　　線幅
 input bool TLINE_BACK = false;//　　背景として表示
+#ifdef __MQL5__
+input bool TLINE_RAY_LEFT = false;//　　左に延長
+#endif
+input bool TLINE_RAY_RIGHT = false;//　　右に延長
 
 class CAcemQuickTline : public CAcemQuickEditBase
 {
@@ -118,5 +122,9 @@ bool CAcemQuickTline::setDefalutProp(string objName)
     ObjectSetInteger(ChartID(), objName, OBJPROP_STYLE, TLINE_STYLE);
     ObjectSetInteger(ChartID(), objName, OBJPROP_WIDTH, TLINE_WIDTH);
     ObjectSetInteger(ChartID(), objName, OBJPROP_BACK, TLINE_BACK);
+    ObjectSetInteger(ChartID(), objName, OBJPROP_RAY_RIGHT, TLINE_RAY_RIGHT);
+#ifdef __MQL5__
+   ObjectSetInteger(ChartID(), objName, OBJPROP_RAY_LEFT, TLINE_RAY_LEFT);
+#endif
     return true;
 }
