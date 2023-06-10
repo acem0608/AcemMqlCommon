@@ -10,7 +10,8 @@
 
 #include <Acem/QuickEdit/AcemQuickEditBase.mqh>
 
-input eInputKeyCode KEY_DELETE = ACEM_KEYCODE_D;//削除
+input string delete_dmy1 = "";//-- 削除の設定 --
+input eInputKeyCode KEY_DELETE = ACEM_KEYCODE_D;//　　削除キー
 
 class CAcemQuickDelete : public CAcemQuickEditBase
 {

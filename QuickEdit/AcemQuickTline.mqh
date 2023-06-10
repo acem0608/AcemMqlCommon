@@ -11,7 +11,12 @@
 #include <Acem/QuickEdit/AcemQuickEditBase.mqh>
 #include <ChartObjects/ChartObjectsLines.mqh>
 
-input eInputKeyCode KEY_TLINE = ACEM_KEYCODE_T; //トレンドライン
+input string tline_dmy1 = "";//-- トレンドラインの設定 --
+input eInputKeyCode KEY_TLINE = ACEM_KEYCODE_T; //　　トレンドラインの入力キー
+input color TLINE_COLOR = 0x00FFFFFF;//　　色
+input ENUM_LINE_STYLE TLINE_STYLE = STYLE_SOLID;//　　線種
+input eLineidth TLINE_WIDTH = LINE_WIDTH_1;//　　線幅
+input bool TLINE_BACK = false;//　　背景として表示
 
 class CAcemQuickTline : public CAcemQuickEditBase
 {
@@ -27,6 +32,7 @@ private:
     bool init(bool bDel);
 
     string getNewObjName();
+    virtual bool setDefalutProp(string objName);
 public:
     CAcemQuickTline();
     ~CAcemQuickTline();
@@ -104,4 +110,13 @@ string CAcemQuickTline::getNewObjName()
     } while (ObjectFind(ChartID(), objName) >= 0);
 
     return objName;
+}
+bool CAcemQuickTline::setDefalutProp(string objName)
+{
+    CAcemQuickEditBase::setDefalutProp(objName);
+    ObjectSetInteger(ChartID(), objName, OBJPROP_COLOR, TLINE_COLOR);
+    ObjectSetInteger(ChartID(), objName, OBJPROP_STYLE, TLINE_STYLE);
+    ObjectSetInteger(ChartID(), objName, OBJPROP_WIDTH, TLINE_WIDTH);
+    ObjectSetInteger(ChartID(), objName, OBJPROP_BACK, TLINE_BACK);
+    return true;
 }

@@ -42,6 +42,15 @@ enum eInputKeyCode
     ACEM_KEYCODE_Z = 90 // Z
 };
 
+enum eLineidth
+{
+   LINE_WIDTH_1  = 1, //1
+   LINE_WIDTH_2  = 2, //2
+   LINE_WIDTH_3  = 3, //3
+   LINE_WIDTH_4  = 4, //4
+   LINE_WIDTH_5  = 5 //5
+};
+
 class CAcemQuickEditBase : public CAcemBase
 {
 protected:
@@ -57,7 +66,7 @@ public:
     
     virtual void init();
     virtual bool OnChartEvent(int id, long lparam, double dparam, string sparam);
-    bool setDefalutProp(string objName);
+    virtual bool setDefalutProp(string objName);
 };
 
 //+------------------------------------------------------------------+
