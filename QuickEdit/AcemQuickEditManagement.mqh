@@ -39,6 +39,8 @@ protected:
 public:
     CAcemQuickEditManagement();
     ~CAcemQuickEditManagement();
+
+    virtual bool isEditing();
 };
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -56,13 +58,22 @@ CAcemQuickEditManagement::~CAcemQuickEditManagement()
 
 bool CAcemQuickEditManagement::OnKeyDown(int id, long lparam, double dparam, string sparam)
 {
-    m_quickCLine.OnKeyDown(id, lparam, dparam, sparam);
-    m_quickHLine.OnKeyDown(id, lparam, dparam, sparam);
-    m_quickVLine.OnKeyDown(id, lparam, dparam, sparam);
-    m_quickTLine.OnKeyDown(id, lparam, dparam, sparam);
-    m_quickDelete.OnKeyDown(id, lparam, dparam, sparam);
-    m_quickDeselect.OnKeyDown(id, lparam, dparam, sparam);
-
+    if (isEditing()) {
+        if (m_quickCLine.isEditing()) {
+            m_quickCLine.OnKeyDown(id, lparam, dparam, sparam);
+        }
+        if (m_quickCLine.isEditing()) {
+            m_quickCLine.OnKeyDown(id, lparam, dparam, sparam);
+        }
+    } else {
+        m_quickCLine.OnKeyDown(id, lparam, dparam, sparam);
+        m_quickHLine.OnKeyDown(id, lparam, dparam, sparam);
+        m_quickVLine.OnKeyDown(id, lparam, dparam, sparam);
+        m_quickTLine.OnKeyDown(id, lparam, dparam, sparam);
+        m_quickDelete.OnKeyDown(id, lparam, dparam, sparam);
+        m_quickDeselect.OnKeyDown(id, lparam, dparam, sparam);
+    }
+    
     return true;
 }
 
@@ -172,4 +183,9 @@ bool CAcemQuickEditManagement::OnChartChange(int id, long lparam, double dparam,
     m_quickDeselect.OnChartChange(id, lparam, dparam, sparam);
 
     return true;
+}
+
+bool CAcemQuickEditManagement::isEditing()
+{
+    return  m_quickCLine.isEditing() || m_quickTLine.isEditing();
 }
