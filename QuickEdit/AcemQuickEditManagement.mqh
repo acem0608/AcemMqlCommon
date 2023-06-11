@@ -59,8 +59,8 @@ CAcemQuickEditManagement::~CAcemQuickEditManagement()
 bool CAcemQuickEditManagement::OnKeyDown(int id, long lparam, double dparam, string sparam)
 {
     if (isEditing()) {
-        if (m_quickCLine.isEditing()) {
-            m_quickCLine.OnKeyDown(id, lparam, dparam, sparam);
+        if (m_quickTLine.isEditing()) {
+            m_quickTLine.OnKeyDown(id, lparam, dparam, sparam);
         }
         if (m_quickCLine.isEditing()) {
             m_quickCLine.OnKeyDown(id, lparam, dparam, sparam);

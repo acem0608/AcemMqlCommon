@@ -70,9 +70,9 @@ bool CAcemQuickTline::init(bool bDel)
 
 bool CAcemQuickTline::OnKeyDown(int id, long lparam, double dparam, string sparam)
 {
-    if (lparam == KEY_TLINE)
+    if (m_pTline == NULL)
     {
-        if (m_pTline == NULL)
+        if (lparam == KEY_TLINE)
         {
             init(true);
             m_pTline = GetPointer(m_Tline);
@@ -81,11 +81,13 @@ bool CAcemQuickTline::OnKeyDown(int id, long lparam, double dparam, string spara
             {
                 setDefalutProp(objName);
             }
-        }
+            } else if (lparam == ACEM_KEYCODE_ESC) {
+                init(true);
+            }
     } else if (lparam == ACEM_KEYCODE_ESC) {
         init(true);
     }
-
+    
     return true;
 }
 bool CAcemQuickTline::OnMouseMove(int id, long lparam, double dparam, string sparam)
