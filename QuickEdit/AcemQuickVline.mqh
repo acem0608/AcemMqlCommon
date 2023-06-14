@@ -20,7 +20,6 @@ input bool VLINE_BACK = false;//　　背景として表示
 class CAcemQuickVline : public CAcemQuickEditBase
 {
 private:
-    string getNewObjName();
     long m_vlineIndex;
 
     virtual bool setDefalutProp(string objName);
@@ -34,7 +33,7 @@ public:
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-CAcemQuickVline::CAcemQuickVline()
+CAcemQuickVline::CAcemQuickVline() : CAcemQuickEditBase("Vertical Line ")
 {
 }
 //+------------------------------------------------------------------+
@@ -57,17 +56,6 @@ bool CAcemQuickVline::OnKeyDown(int id, long lparam, double dparam, string spara
         m_time = 0;
     }
     return true;
-}
-
-string CAcemQuickVline::getNewObjName()
-{
-    string objName;
-    do
-    {
-        objName = "Vertical Line " + convettNumToStr05(m_vlineIndex++);
-    } while (ObjectFind(ChartID(), objName) >= 0);
-
-    return objName;
 }
 
 bool CAcemQuickVline::setDefalutProp(string objName)

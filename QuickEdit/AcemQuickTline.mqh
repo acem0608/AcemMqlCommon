@@ -29,9 +29,6 @@ private:
     CChartObjectTrend m_Tline;
     CChartObjectTrend* m_pTline;
 
-    bool init(bool bDel);
-
-    string getNewObjName();
     virtual bool setDefalutProp(string objName);
 public:
     CAcemQuickTline();
@@ -40,11 +37,14 @@ public:
     virtual bool OnKeyDown(int id, long lparam, double dparam, string sparam);
     virtual bool OnMouseMove(int id, long lparam, double dparam, string sparam);
     virtual bool OnChartClick(int id, long lparam, double dparam, string sparam);
+
+    bool init(bool bDel);
+    virtual bool isEditing();
 };
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-CAcemQuickTline::CAcemQuickTline()
+CAcemQuickTline::CAcemQuickTline() : CAcemQuickEditBase("Trend Line ")
 {
     m_tlineIndex = 0;
     m_pTline = NULL;
@@ -70,9 +70,9 @@ bool CAcemQuickTline::init(bool bDel)
 
 bool CAcemQuickTline::OnKeyDown(int id, long lparam, double dparam, string sparam)
 {
-    if (lparam == KEY_TLINE)
+    if (m_pTline == NULL)
     {
-        if (m_pTline == NULL)
+        if (lparam == KEY_TLINE)
         {
             init(true);
             m_pTline = GetPointer(m_Tline);
@@ -81,11 +81,13 @@ bool CAcemQuickTline::OnKeyDown(int id, long lparam, double dparam, string spara
             {
                 setDefalutProp(objName);
             }
-        }
+            } else if (lparam == ACEM_KEYCODE_ESC) {
+                init(true);
+            }
     } else if (lparam == ACEM_KEYCODE_ESC) {
         init(true);
     }
-
+    
     return true;
 }
 bool CAcemQuickTline::OnMouseMove(int id, long lparam, double dparam, string sparam)
@@ -108,16 +110,6 @@ bool CAcemQuickTline::OnChartClick(int id, long lparam, double dparam, string sp
     return true;
 }
 
-string CAcemQuickTline::getNewObjName()
-{
-    string objName;
-    do {
-        objName = "Trend Line " + convettNumToStr05(m_tlineIndex++);
-    } while (ObjectFind(ChartID(), objName) >= 0);
-
-    return objName;
-}
-
 bool CAcemQuickTline::setDefalutProp(string objName)
 {
     CAcemQuickEditBase::setDefalutProp(objName);
@@ -129,5 +121,14 @@ bool CAcemQuickTline::setDefalutProp(string objName)
 #ifdef __MQL5__
    ObjectSetInteger(ChartID(), objName, OBJPROP_RAY_LEFT, TLINE_RAY_LEFT);
 #endif
+    return true;
+}
+
+bool CAcemQuickTline::isEditing()
+{
+   if (m_pTline == NULL) {
+      return false;
+  }
+
     return true;
 }

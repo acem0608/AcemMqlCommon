@@ -19,7 +19,6 @@ input bool HLINE_BACK = false;//　　背景として表示
 class CAcemQuickHline : public CAcemQuickEditBase
 {
 protected:
-    string getNewObjName();
     long m_hlineIndex;
 
 public:
@@ -32,7 +31,7 @@ public:
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-CAcemQuickHline::CAcemQuickHline()
+CAcemQuickHline::CAcemQuickHline() : CAcemQuickEditBase("Horizontal Line ")
 {
     m_hlineIndex = 1;
 }
@@ -56,16 +55,6 @@ bool CAcemQuickHline::OnKeyDown(int id, long lparam, double dparam, string spara
         m_time = 0;
     }
     return true;
-}
-
-string CAcemQuickHline::getNewObjName()
-{
-    string objName;
-    do {
-        objName = "Horizontal Line " + convettNumToStr05(m_hlineIndex++);
-    } while (ObjectFind(ChartID(), objName) >= 0);
-
-    return objName;
 }
 
 bool CAcemQuickHline::setDefalutProp(string objName)
