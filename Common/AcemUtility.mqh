@@ -30,57 +30,57 @@
 // #import
 //+------------------------------------------------------------------+
 
-int convIndexToPosX(int index)
+int convIndexToPosX(long chartId, int index)
 {
     int posX;
     int posY;
     double price = 1.0;
-    datetime time = convIndexToTime(index);
-    ChartTimePriceToXY(ChartID(), 0, time, price, posX, posY);
+    datetime time = convIndexToTime(chartId, index);
+    ChartTimePriceToXY(chartId, 0, time, price, posX, posY);
 
     return posX;
 }
 
-datetime convIndexToTime(int index)
+datetime convIndexToTime(long chartId, int index)
 {
-    datetime time  = iTime(ChartSymbol(ChartID()), ChartPeriod(ChartID()), index);
+    datetime time  = iTime(ChartSymbol(chartId), ChartPeriod(chartId), index);
 
     return time;
 }
-int convPosXToIndex(int x)
+int convPosXToIndex(long chartId, int x)
 {
-    datetime time = convPosXToTime(x);
-    int index = iBarShift(ChartSymbol(ChartID()), ChartPeriod(ChartID()), time, false);
+    datetime time = convPosXToTime(chartId, x);
+    int index = iBarShift(ChartSymbol(chartId), ChartPeriod(chartId), time, false);
     
     return index;
 }
 
-datetime convPosXToTime(int x)
+datetime convPosXToTime(long chartId, int x)
 {
     datetime time;
     int posY = 0;
     double price;
     int subwindos;
    
-    ChartXYToTimePrice(ChartID(), x, posY, subwindos, time, price);
+    ChartXYToTimePrice(chartId, x, posY, subwindos, time, price);
 
     return time;
 }
 
-int convTimeToPosX(datetime time)
+int convTimeToPosX(long chartId, datetime time)
 {
     int posX;
     int posY;
     double price = 1;
-    ChartTimePriceToXY(ChartID(), 0, time, price, posX, posY);
+    ChartTimePriceToXY(chartId, 0, time, price, posX, posY);
 
     return posX;
 }
 
-int convTimeToIndex(datetime time)
+int convTimeToIndex(long chartId, datetime time)
 {
-    int posX = convTimeToPosX(time);
-    int index = convPosXToIndex(posX);
+    int posX = convTimeToPosX(chartId, time);
+    int index = convPosXToIndex(chartId, posX);
 
     return index;
 }
