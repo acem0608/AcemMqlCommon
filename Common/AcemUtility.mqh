@@ -49,9 +49,15 @@ datetime convIndexToTime(long chartId, int index)
 }
 int convPosXToIndex(long chartId, int x)
 {
-    datetime time = convPosXToTime(chartId, x);
-    int index = iBarShift(ChartSymbol(chartId), ChartPeriod(chartId), time, false);
+//    datetime time = convPosXToTime(chartId, x);
+//    int index = iBarShift(ChartSymbol(chartId), ChartPeriod(chartId), time, false);
+    int leftIndex = WindowFirstVisibleBar();
+    int leftPosX = convIndexToPosX(ChartID(), leftIndex);
+    int width = convIndexToPosX(ChartID(), leftIndex -1) - leftPosX;
     
+    int shift = (int)MathRound((leftPosX - x) / width);
+    int index = leftIndex + shift;
+
     return index;
 }
 
@@ -62,8 +68,8 @@ datetime convPosXToTime(long chartId, int x)
     double price;
     int subwindos;
    
-    ChartXYToTimePrice(chartId, x, posY, subwindos, time, price);
-
+     bool bRetc =ChartXYToTimePrice(chartId, x, posY, subwindos, time, price);
+         
     return time;
 }
 
