@@ -85,9 +85,10 @@ int convTimeToPosX(long chartId, datetime time)
 
 int convTimeToIndex(long chartId, datetime time)
 {
-    int posX = convTimeToPosX(chartId, time);
-    int index = convPosXToIndex(chartId, posX);
-
+//    int posX = convTimeToPosX(chartId, time);
+//    int index = convPosXToIndex(chartId, posX);
+    int index = iBarShift(ChartSymbol(chartId), ChartPeriod(chartId), time, false);
+    
     return index;
 }
 
