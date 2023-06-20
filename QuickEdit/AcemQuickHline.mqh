@@ -13,7 +13,7 @@ input string dmy1 = "";//-- 水平線の設定 --
 input eInputKeyCode KEY_HLINE = ACEM_KEYCODE_H;//　　水平線の入力キー
 input color HLINE_COLOR = 0x00FFFFFF;//　　色
 input ENUM_LINE_STYLE HLINE_STYLE = STYLE_SOLID;//　　線種
-input eLineidth HLINE_WIDTH = LINE_WIDTH_1;//　　線幅
+input eLineWidth HLINE_WIDTH = LINE_WIDTH_1;//　　線幅
 input bool HLINE_BACK = false;//　　背景として表示
 
 class CAcemQuickHline : public CAcemQuickEditBase

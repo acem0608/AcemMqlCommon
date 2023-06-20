@@ -15,7 +15,7 @@ input string tline_dmy1 = "";//-- トレンドラインの設定 --
 input eInputKeyCode KEY_TLINE = ACEM_KEYCODE_T; //　　トレンドラインの入力キー
 input color TLINE_COLOR = 0x00FFFFFF;//　　色
 input ENUM_LINE_STYLE TLINE_STYLE = STYLE_SOLID;//　　線種
-input eLineidth TLINE_WIDTH = LINE_WIDTH_1;//　　線幅
+input eLineWidth TLINE_WIDTH = LINE_WIDTH_1;//　　線幅
 input bool TLINE_BACK = false;//　　背景として表示
 #ifdef __MQL5__
 input bool TLINE_RAY_LEFT = false;//　　左に延長
