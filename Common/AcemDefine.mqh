@@ -29,6 +29,14 @@
 #ifndef _ACEM_DEFINE
 #define _ACEM_DEFINE
 
+#define ACEM_SYNC_ADD_CODE "AcemSyncAdd"
+#define ACEM_SYNC_MOD_CODE "AcemSyncMod"
+#define ACEM_SYNC_DEL_CODE "AcemSyncDel"
+#define ACEM_SYNC_OTHER_CHART "AcemSyncOth"
+
+#define ACEM_SYNC_BASE_LINE_NAME "AcemSyncBaseLine"
+
+
 enum eInputKeyCode
 {
     ACEM_KEYCODE_ESC = 27,// ESC

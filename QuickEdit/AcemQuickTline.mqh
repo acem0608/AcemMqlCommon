@@ -80,7 +80,7 @@ bool CAcemQuickTline::OnKeyDown(int id, long lparam, double dparam, string spara
             if (m_Tline.Create(ChartID(), objName, 0, m_time, m_price, m_time, m_price))
             {
                 setDefalutProp(objName);
-                EventChartCustom(ChartID(), 0, 0, 0.0, "AcemSyncOth"+objName);
+                EventChartCustom(ChartID(), 0, 0, 0.0, ACEM_SYNC_OTHER_CHART + objName);
             }
             } else if (lparam == ACEM_KEYCODE_ESC) {
                 init(true);
@@ -97,7 +97,7 @@ bool CAcemQuickTline::OnMouseMove(int id, long lparam, double dparam, string spa
 
     if (m_pTline != NULL) {
         m_Tline.SetPoint(1, m_time, m_price);
-        EventChartCustom(ChartID(), 0, 0, 0.0, "AcemSyncOth"+sparam);
+        EventChartCustom(ChartID(), 0, 0, 0.0, "ACEM_SYNC_OTHER_CHART + sparam);
         ChartRedraw(ChartID());
     }
     return true;
