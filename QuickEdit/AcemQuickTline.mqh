@@ -97,7 +97,7 @@ bool CAcemQuickTline::OnMouseMove(int id, long lparam, double dparam, string spa
 
     if (m_pTline != NULL) {
         m_Tline.SetPoint(1, m_time, m_price);
-        EventChartCustom(ChartID(), 0, 0, 0.0, "ACEM_SYNC_OTHER_CHART + sparam);
+        EventChartCustom(ChartID(), 0, 0, 0.0, ACEM_SYNC_OTHER_CHART + sparam);
         ChartRedraw(ChartID());
     }
     return true;
