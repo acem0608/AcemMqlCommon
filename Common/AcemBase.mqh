@@ -28,6 +28,7 @@ public:
     virtual bool OnObjectDrag(int id, long lparam, double dparam, string sparam);
     virtual bool OnObjectEndEdit(int id, long lparam, double dparam, string sparam);
     virtual bool OnChartChange(int id, long lparam, double dparam, string sparam);
+    virtual bool OnCustomEvent(int id, long lparam, double dparam, string sparam);
 
 };
 //+------------------------------------------------------------------+
@@ -99,6 +100,9 @@ bool CAcemBase::OnChartEvent(int id, long lparam, double dparam, string sparam)
         }
         break;
     default:
+        {
+            OnCustomEvent(id, lparam, dparam, sparam);
+        }
         break;
     }
     return true;
@@ -154,3 +158,7 @@ bool CAcemBase::OnChartChange(int id, long lparam, double dparam, string sparam)
     return true;
 }
 
+bool CAcemBase::OnCustomEvent(int id, long lparam, double dparam, string sparam)
+{
+    return true;
+}
