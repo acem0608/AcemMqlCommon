@@ -32,7 +32,8 @@
 #define ACEM_SYNC_ADD_CODE "AcemSyncAdd"
 #define ACEM_SYNC_MOD_CODE "AcemSyncMod"
 #define ACEM_SYNC_DEL_CODE "AcemSyncDel"
-#define ACEM_SYNC_OTHER_CHART "AcemSyncOth"
+#define ACEM_SYNC_OTHER_CHART_ADD "AcemSyncSAd"
+#define ACEM_SYNC_OTHER_CHART_MOD "AcemSyncSmd"
 
 #define ACEM_SYNC_BASE_LINE_NAME "AcemSyncBaseLine"
 

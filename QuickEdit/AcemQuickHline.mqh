@@ -50,7 +50,7 @@ bool CAcemQuickHline::OnKeyDown(int id, long lparam, double dparam, string spara
         string objName = getNewObjName();
         ObjectCreate(ChartID(), objName, OBJ_HLINE, 0, m_time, m_price);
         setDefalutProp(objName);
-        EventChartCustom(ChartID(), 0, 0, 0.0, "AcemSyncOth"+objName);
+        EventChartCustom(ChartID(), 0, 0, 0.0, ACEM_SYNC_OTHER_CHART_ADD+objName);
         ChartRedraw(ChartID());
         m_price = 0.0;
         m_time = 0;
