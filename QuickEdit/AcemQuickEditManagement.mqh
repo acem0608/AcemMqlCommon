@@ -14,6 +14,7 @@
 #include <Acem/QuickEdit/AcemQuickTline.mqh>
 #include <Acem/QuickEdit/AcemQuickDelete.mqh>
 #include <Acem/QuickEdit/AcemQuickDeselect.mqh>
+#include <Acem/QuickEdit/AcemQuickRectangle.mqh>
 
 class CAcemQuickEditManagement : public CAcemBase
 {
@@ -35,6 +36,7 @@ protected:
     CAcemQuickTline m_quickTLine;
     CAcemQuickDelete m_quickDelete;
     CAcemQuickDeselect m_quickDeselect;
+    CAcemQuickRectangle m_quickRectangle;
 
 public:
     CAcemQuickEditManagement();
@@ -65,6 +67,9 @@ bool CAcemQuickEditManagement::OnKeyDown(int id, long lparam, double dparam, str
         if (m_quickCLine.isEditing()) {
             m_quickCLine.OnKeyDown(id, lparam, dparam, sparam);
         }
+        if (m_quickRectangle.isEditing()) {
+            m_quickRectangle.OnKeyDown(id, lparam, dparam, sparam);
+        }
     } else {
         m_quickCLine.OnKeyDown(id, lparam, dparam, sparam);
         m_quickHLine.OnKeyDown(id, lparam, dparam, sparam);
@@ -72,6 +77,7 @@ bool CAcemQuickEditManagement::OnKeyDown(int id, long lparam, double dparam, str
         m_quickTLine.OnKeyDown(id, lparam, dparam, sparam);
         m_quickDelete.OnKeyDown(id, lparam, dparam, sparam);
         m_quickDeselect.OnKeyDown(id, lparam, dparam, sparam);
+        m_quickRectangle.OnKeyDown(id, lparam, dparam, sparam);
     }
     
     return true;
@@ -85,6 +91,7 @@ bool CAcemQuickEditManagement::OnMouseMove(int id, long lparam, double dparam, s
     m_quickTLine.OnMouseMove(id, lparam, dparam, sparam);
     m_quickDelete.OnMouseMove(id, lparam, dparam, sparam);
     m_quickDeselect.OnMouseMove(id, lparam, dparam, sparam);
+    m_quickRectangle.OnMouseMove(id, lparam, dparam, sparam);
 
     return true;
 }
@@ -97,6 +104,7 @@ bool CAcemQuickEditManagement::OnObjectCreate(int id, long lparam, double dparam
     m_quickTLine.OnObjectCreate(id, lparam, dparam, sparam);
     m_quickDelete.OnObjectCreate(id, lparam, dparam, sparam);
     m_quickDeselect.OnObjectCreate(id, lparam, dparam, sparam);
+    m_quickRectangle.OnObjectCreate(id, lparam, dparam, sparam);
 
     return true;
 }
@@ -109,6 +117,7 @@ bool CAcemQuickEditManagement::OnObjectChange(int id, long lparam, double dparam
     m_quickTLine.OnObjectChange(id, lparam, dparam, sparam);
     m_quickDelete.OnObjectChange(id, lparam, dparam, sparam);
     m_quickDeselect.OnObjectChange(id, lparam, dparam, sparam);
+    m_quickRectangle.OnObjectChange(id, lparam, dparam, sparam);
 
     return true;
 }
@@ -121,6 +130,7 @@ bool CAcemQuickEditManagement::OnObjectDelete(int id, long lparam, double dparam
     m_quickTLine.OnObjectDelete(id, lparam, dparam, sparam);
     m_quickDelete.OnObjectDelete(id, lparam, dparam, sparam);
     m_quickDeselect.OnObjectDelete(id, lparam, dparam, sparam);
+    m_quickRectangle.OnObjectDelete(id, lparam, dparam, sparam);
 
     return true;
 }
@@ -133,6 +143,7 @@ bool CAcemQuickEditManagement::OnChartClick(int id, long lparam, double dparam, 
     m_quickTLine.OnChartClick(id, lparam, dparam, sparam);
     m_quickDelete.OnChartClick(id, lparam, dparam, sparam);
     m_quickDeselect.OnChartClick(id, lparam, dparam, sparam);
+    m_quickRectangle.OnChartClick(id, lparam, dparam, sparam);
 
     return true;
 }
@@ -145,6 +156,7 @@ bool CAcemQuickEditManagement::OnObjectClick(int id, long lparam, double dparam,
     m_quickTLine.OnObjectClick(id, lparam, dparam, sparam);
     m_quickDelete.OnObjectClick(id, lparam, dparam, sparam);
     m_quickDeselect.OnObjectClick(id, lparam, dparam, sparam);
+    m_quickRectangle.OnObjectClick(id, lparam, dparam, sparam);
 
     return true;
 }
@@ -157,6 +169,7 @@ bool CAcemQuickEditManagement::OnObjectDrag(int id, long lparam, double dparam, 
     m_quickTLine.OnObjectDrag(id, lparam, dparam, sparam);
     m_quickDelete.OnObjectDrag(id, lparam, dparam, sparam);
     m_quickDeselect.OnObjectDrag(id, lparam, dparam, sparam);
+    m_quickRectangle.OnObjectDrag(id, lparam, dparam, sparam);
 
     return true;
 }
@@ -169,6 +182,7 @@ bool CAcemQuickEditManagement::OnObjectEndEdit(int id, long lparam, double dpara
     m_quickTLine.OnObjectEndEdit(id, lparam, dparam, sparam);
     m_quickDelete.OnObjectEndEdit(id, lparam, dparam, sparam);
     m_quickDeselect.OnObjectEndEdit(id, lparam, dparam, sparam);
+    m_quickRectangle.OnObjectEndEdit(id, lparam, dparam, sparam);
 
     return true;
 }
@@ -181,11 +195,12 @@ bool CAcemQuickEditManagement::OnChartChange(int id, long lparam, double dparam,
     m_quickTLine.OnChartChange(id, lparam, dparam, sparam);
     m_quickDelete.OnChartChange(id, lparam, dparam, sparam);
     m_quickDeselect.OnChartChange(id, lparam, dparam, sparam);
+    m_quickRectangle.OnChartChange(id, lparam, dparam, sparam);
 
     return true;
 }
 
 bool CAcemQuickEditManagement::isEditing()
 {
-    return  m_quickCLine.isEditing() || m_quickTLine.isEditing();
+    return  m_quickCLine.isEditing() || m_quickTLine.isEditing() || m_quickRectangle.isEditing();
 }
