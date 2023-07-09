@@ -23,7 +23,7 @@ protected:
     string m_objNamePrefix;
     long m_objNameIndex; 
 
-    string getNewObjName();
+    virtual string getNewObjName();
     
 public:
     CAcemQuickEditBase();
