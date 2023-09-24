@@ -10,6 +10,7 @@
 
 #include <Acem/Common/AcemBase.mqh>
 #include <Acem/Common/AcemDefine.mqh>
+#include <Acem/Common/AcemUtility.mqh>
 
 #define KEYCODE_ESC 27
 

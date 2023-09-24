@@ -37,6 +37,9 @@
 
 #define ACEM_SYNC_BASE_LINE_NAME "AcemSyncBaseLine"
 
+#define DUMMY_RECT_NAME "dummyRect"
+#define DUMMY_CHANNEL_NAME "dummyChannel"
+#define DUMMY_TRENDLINE_NAME "dummyTrendLine"
 
 enum eInputKeyCode
 {
