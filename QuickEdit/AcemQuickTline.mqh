@@ -60,6 +60,9 @@ bool CAcemQuickTline::init(bool bDel)
 {
     if (m_pTline != NULL) {
         if (bDel) {
+            string objName = m_Tline.Name();
+            Print(objName);
+            ObjectDelete(ChartID(), objName);
             m_Tline.Delete();
         }
         m_pTline = NULL;
@@ -76,7 +79,7 @@ bool CAcemQuickTline::OnKeyDown(int id, long lparam, double dparam, string spara
         {
             init(true);
             m_pTline = GetPointer(m_Tline);
-            string objName = getNewObjName();
+            string objName = DUMMY_TRENDLINE_NAME;
             if (m_Tline.Create(ChartID(), objName, 0, m_time, m_price, m_time, m_price))
             {
                 setDefalutProp(objName);
@@ -104,8 +107,10 @@ bool CAcemQuickTline::OnMouseMove(int id, long lparam, double dparam, string spa
 bool CAcemQuickTline::OnChartClick(int id, long lparam, double dparam, string sparam)
 {
     if (m_pTline != NULL) {
-        string objName = m_Tline.Name();
-        EventChartCustom(ChartID(), 0, 0, 0.0, ACEM_SYNC_OTHER_CHART_ADD + objName);
+        string objName = getNewObjName();
+        cloneObject(ChartID(), DUMMY_TRENDLINE_NAME, ChartID(), objName);
+//        EventChartCustom(ChartID(), 0, 0, 0.0, ACEM_SYNC_OTHER_CHART_ADD + objName);
+        init(true);
         m_pTline = NULL;
     }
         
@@ -134,3 +139,4 @@ bool CAcemQuickTline::isEditing()
 
     return true;
 }
+
