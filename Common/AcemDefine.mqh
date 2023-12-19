@@ -36,7 +36,7 @@
 #define ACEM_SYNC_OTHER_CHART_MOD "AcemSyncSmd"
 
 #define ACEM_SYNC_BASE_LINE_NAME "AcemSyncBaseLine"
-
+#define ACEM_CHART_HIDE_CANVAS "AcemCHartHide"
 
 enum eInputKeyCode
 {
