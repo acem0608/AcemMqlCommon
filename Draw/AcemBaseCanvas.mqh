@@ -1,35 +1,36 @@
 //+------------------------------------------------------------------+
-//|                                                 AcemDrawBase.mqh |
+//|                                                 AcemBaseCanvas.mqh |
 //|                                             Copyright 2023, Acem |
 //|                                             https://www.mql5.com |
 //+------------------------------------------------------------------+
 #property copyright "Copyright 2023, Acem"
-#property link      "https://www.mql5.com"
-#property version   "1.00"
+#property link "https://www.mql5.com"
+#property version "1.00"
 #property strict
 
 #include <Canvas/Canvas.mqh>
 
-class CAcemDrawBase
-  {
+class CAcemBaseCanvas
+{
 private:
     CCanvas m_canavs;
-    int m_width;    //  
+    int m_width; //
     int m_height;
+
 public:
-                     CAcemDrawBase();
-                    ~CAcemDrawBase();
-  };
+    CAcemBaseCanvas();
+    ~CAcemBaseCanvas();
+};
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-CAcemDrawBase::CAcemDrawBase()
-  {
-  }
+CAcemBaseCanvas::CAcemDrawBase()
+{
+}
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-CAcemDrawBase::~CAcemDrawBase()
-  {
-  }
+CAcemBaseCanvas::~CAcemDrawBase()
+{
+}
 //+------------------------------------------------------------------+

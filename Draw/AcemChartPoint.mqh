@@ -1,5 +1,5 @@
 //+------------------------------------------------------------------+
-//|                                            AcemDrawFreeCurve.mqh |
+//|                                                 AcemChartPos.mqh |
 //|                                         Copyright 2023, Acem0608 |
 //|                                             https://www.mql5.com |
 //+------------------------------------------------------------------+
@@ -8,51 +8,48 @@
 #property version "1.00"
 #property strict
 
-#include <Arrays/List.mqh>
-#include <Acem/Common/AcemBase.mqh>
-#include <Acem/Draw/AcemFreeCurveData.mqh>
+#include <Object.mqh>
 
-class CAcemDrawFreeCurve : public CAcemBase
+class CAcemChartPoint : public CObject
 {
 private:
-    CList m_listLine;
-    CAcemFreeCurveData* m_pCurrentLine;
+    datetime m_time;
+    double m_price;
 
 public:
-    CAcemDrawFreeCurve();
-    ~CAcemDrawFreeCurve();
+    CAcemChartPoint();
+    ~CAcemChartPoint();
 
-    bool init();
-    virtual bool OnMouseMove(int id, long lparam, double dparam, string sparam);
-    virtual bool OnChartChange(int id, long lparam, double dparam, string sparam);
+    void setTime(datetime time) {m_time = time;};
+    datetime getTime() {return m_time;};
+    void setPrice(double price) {m_price = price;};
+    double getPrice() {return m_price;};
+
+    void setTimePrice(datetime time, double price);
+    void getTimePrice(datetime& time, double& price);
 };
-
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-CAcemDrawFreeCurve::CAcemDrawFreeCurve()
+CAcemChartPoint::CAcemChartPoint()
 {
 }
-
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-CAcemDrawFreeCurve::~CAcemDrawFreeCurve()
+CAcemChartPoint::~CAcemChartPoint()
 {
 }
 //+------------------------------------------------------------------+
 
-bool CAcemDrawFreeCurve::init()
+void CAcemChartPoint::setTimePrice(datetime time, double price)
 {
-    return true;
+    m_time = time;
+    m_price = price;
 }
 
-bool CAcemDrawFreeCurve::OnMouseMove(int id, long lparam, double dparam, string sparam)
+void CAcemChartPoint::getTimePrice(datetime& time, double& price)
 {
-    return true;
-}
-
-bool CAcemDrawFreeCurve::OnChartChange(int id, long lparam, double dparam, string sparam)
-{
-    return true;
+    time = m_time;
+    price = m_price;
 }
