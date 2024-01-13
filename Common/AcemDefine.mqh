@@ -37,6 +37,7 @@
 
 #define ACEM_SYNC_BASE_LINE_NAME "AcemSyncBaseLine"
 #define ACEM_CHART_HIDE_CANVAS "AcemChartHide"
+#define ACEM_FREE_CUREVE_CANVAS_NAME "AcemFreeCurveCanvas"
 
 #define DUMMY_RECT_NAME "dummyRect"
 #define DUMMY_CHANNEL_NAME "dummyChannel"

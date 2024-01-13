@@ -18,6 +18,7 @@ private:
 
 public:
     CAcemChartPoint();
+    CAcemChartPoint(datetime time, double price);
     ~CAcemChartPoint();
 
     void setTime(datetime time) {m_time = time;};
@@ -34,6 +35,12 @@ public:
 CAcemChartPoint::CAcemChartPoint()
 {
 }
+
+CAcemChartPoint::CAcemChartPoint(datetime time, double price)
+{
+    setTimePrice(time, price);
+}
+
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+

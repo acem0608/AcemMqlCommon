@@ -10,13 +10,16 @@
 
 #include <Arrays/List.mqh>
 #include <Acem/Common/AcemBase.mqh>
+#include <Acem/Common/AcemDefine.mqh>
 #include <Acem/Draw/AcemFreeCurveData.mqh>
+#include <Acem/Draw/AcemFreeCurveCanvas.mqh>
 
 class CAcemDrawFreeCurve : public CAcemBase
 {
 private:
     CList m_listLine;
     CAcemFreeCurveData* m_pCurrentLine;
+    CAcemFreeCurveCanvas m_canvas;
 
 public:
     CAcemDrawFreeCurve();
@@ -30,8 +33,10 @@ public:
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-CAcemDrawFreeCurve::CAcemDrawFreeCurve()
+CAcemDrawFreeCurve::CAcemDrawFreeCurve() : m_canvas(ACEM_FREE_CUREVE_CANVAS_NAME)
+                                            , m_pCurrentLine(NULL)
 {
+    m_listLine.FreeMode(true);
 }
 
 //+------------------------------------------------------------------+
@@ -44,6 +49,10 @@ CAcemDrawFreeCurve::~CAcemDrawFreeCurve()
 
 bool CAcemDrawFreeCurve::init()
 {
+    m_canvas.init();
+    m_pCurrentLine = NULL;
+    m_listLine.Clear();
+
     return true;
 }
 
