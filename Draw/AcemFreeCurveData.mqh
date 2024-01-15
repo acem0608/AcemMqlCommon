@@ -31,6 +31,7 @@ public:
     void addPoint(CAcemChartPoint* pPoint);
     CAcemChartPoint* getFirstPoint();
     CAcemChartPoint* nextPoint();
+    CAcemChartPoint* getLastPoint();
 };
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -53,12 +54,17 @@ void CAcemFreeCurveData::addPoint(CAcemChartPoint *pPoint)
     m_listPoint.Add(pPoint);
 }
 
-CAcemChartPoint* CAcemFreeCurveData::getFirstPoint(void)
+CAcemChartPoint* CAcemFreeCurveData::getFirstPoint()
 {
     return ((CAcemChartPoint*)m_listPoint.GetFirstNode());
 }
 
-CAcemChartPoint* CAcemFreeCurveData::nextPoint(void)
+CAcemChartPoint* CAcemFreeCurveData::nextPoint()
 {
     return ((CAcemChartPoint*)m_listPoint.GetNextNode());
+}
+
+CAcemChartPoint* CAcemFreeCurveData::getLastPoint()
+{
+    return ((CAcemChartPoint*)m_listPoint.GetLastNode());
 }
