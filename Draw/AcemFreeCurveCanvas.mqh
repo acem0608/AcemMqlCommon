@@ -47,8 +47,8 @@ bool CAcemFreeCurveCanvas::init()
 */
 void CAcemFreeCurveCanvas::drawLine(int x1, int y1, int x2, int y2, int lineWidth, color lineColor)
 {
-    m_canvas.Line(x1, y1, x2, y2, ColorToARGB(0x00FFFFF));
+    Line(x1, y1, x2, y2, ColorToARGB(lineColor));
 //    m_canvas.Line(x1, y1, x2, y2, ColorToARGB((color)ChartGetInteger(ChartID(), CHART_COLOR_BACKGROUND)));
-    m_canvas.Update();
+    Update();
 //    Print("(" +x1 + "," + y1 + ") -> (" + x2 + "," + y2 + ")");
 }

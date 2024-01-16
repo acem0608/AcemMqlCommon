@@ -12,12 +12,12 @@
 #include <Arrays/List.mqh>
 #include <Acem/Draw/AcemChartPoint.mqh>
 
-class CAcemFreeCurveData : public CObject
+class CAcemFreeCurveData : public CList
 {
 private:
     color m_lineColor;
     int m_lineWidth;
-    CList m_listPoint;
+//    CList m_listPoint;
 
 public:
     CAcemFreeCurveData();
@@ -27,44 +27,19 @@ public:
     color getLineColor() {return m_lineColor;};
     void setLineWidth(int width) {m_lineWidth = width;};
     int getLineWidth() {return m_lineWidth;};
-
-    void addPoint(CAcemChartPoint* pPoint);
-    CAcemChartPoint* getFirstPoint();
-    CAcemChartPoint* nextPoint();
-    CAcemChartPoint* getLastPoint();
 };
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
 CAcemFreeCurveData::CAcemFreeCurveData()
 {
-    m_listPoint.FreeMode(true);
+    FreeMode(true);
 }
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
 CAcemFreeCurveData::~CAcemFreeCurveData()
 {
-    m_listPoint.Clear();
+    Clear();
 }
 //+------------------------------------------------------------------+
-
-void CAcemFreeCurveData::addPoint(CAcemChartPoint *pPoint)
-{
-    m_listPoint.Add(pPoint);
-}
-
-CAcemChartPoint* CAcemFreeCurveData::getFirstPoint()
-{
-    return ((CAcemChartPoint*)m_listPoint.GetFirstNode());
-}
-
-CAcemChartPoint* CAcemFreeCurveData::nextPoint()
-{
-    return ((CAcemChartPoint*)m_listPoint.GetNextNode());
-}
-
-CAcemChartPoint* CAcemFreeCurveData::getLastPoint()
-{
-    return ((CAcemChartPoint*)m_listPoint.GetLastNode());
-}
