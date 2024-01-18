@@ -28,6 +28,8 @@ public:
 
     void setTimePrice(datetime time, double price);
     void getTimePrice(datetime& time, double& price);
+    
+    bool isEqual(CAcemChartPoint* pPoint);
 };
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -59,4 +61,17 @@ void CAcemChartPoint::getTimePrice(datetime& time, double& price)
 {
     time = m_time;
     price = m_price;
+}
+
+bool CAcemChartPoint::isEqual(CAcemChartPoint *pPoint)
+{
+    datetime time;
+    double price;
+    pPoint.getTimePrice(time, price);
+    
+    if (m_time != time || m_price != price) {
+        return false;
+    }
+    
+    return true;
 }

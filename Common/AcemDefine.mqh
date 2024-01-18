@@ -43,6 +43,8 @@
 #define DUMMY_CHANNEL_NAME "dummyChannel"
 #define DUMMY_TRENDLINE_NAME "dummyTrendLine"
 
+#define ACEM_FREECURVE_DATA_PREFIX "AcemFcData"
+
 enum eInputKeyCode
 {
     ACEM_KEYCODE_ESC = 27,// ESC

@@ -17,7 +17,7 @@ class CAcemFreeCurveData : public CList
 private:
     color m_lineColor;
     int m_lineWidth;
-//    CList m_listPoint;
+    string m_strLineDataPrefix;
 
 public:
     CAcemFreeCurveData();
@@ -27,6 +27,8 @@ public:
     color getLineColor() {return m_lineColor;};
     void setLineWidth(int width) {m_lineWidth = width;};
     int getLineWidth() {return m_lineWidth;};
+    void setLineDataPrefix(string strPrefix) {m_strLineDataPrefix = strPrefix;};
+    string getLineDataPrefix() {return m_strLineDataPrefix;};
 };
 //+------------------------------------------------------------------+
 //|                                                                  |
