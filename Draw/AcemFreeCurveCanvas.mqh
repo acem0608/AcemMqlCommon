@@ -19,7 +19,7 @@ public:
     CAcemFreeCurveCanvas(string canvasName);
     ~CAcemFreeCurveCanvas();
     
-    void drawLine(int x1, int y1, int x2, int y2, int lineWidth, color lineColor);
+    void drawLine(int x1, int y1, int x2, int y2, int lineWidth, color lineColor, bool bUpdate = false);
 //    bool init();
 };
 //+------------------------------------------------------------------+
@@ -45,10 +45,12 @@ bool CAcemFreeCurveCanvas::init()
     return true;
 }
 */
-void CAcemFreeCurveCanvas::drawLine(int x1, int y1, int x2, int y2, int lineWidth, color lineColor)
+void CAcemFreeCurveCanvas::drawLine(int x1, int y1, int x2, int y2, int lineWidth, color lineColor, bool bUpdate)
 {
     Line(x1, y1, x2, y2, ColorToARGB(lineColor));
 //    m_canvas.Line(x1, y1, x2, y2, ColorToARGB((color)ChartGetInteger(ChartID(), CHART_COLOR_BACKGROUND)));
-    Update();
+    if (bUpdate) {
+        Update();
+    }
 //    Print("(" +x1 + "," + y1 + ") -> (" + x2 + "," + y2 + ")");
 }
