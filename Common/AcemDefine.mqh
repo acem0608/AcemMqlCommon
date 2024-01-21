@@ -95,4 +95,12 @@ enum eLineWidth
    LINE_WIDTH_5  = 5 //5
 };
 
+enum eLineDirection {
+    ACEM_DIRECTION_UP,
+    ACEM_DIRECTION_LEFT,
+    ACEM_DIRECTION_DOWN,
+    ACEM_DIRECTION_RIGHT,
+};
+
 #endif
+

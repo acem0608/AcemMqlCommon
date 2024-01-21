@@ -10,6 +10,7 @@
 
 #include <Object.mqh>
 #include <Arrays/List.mqh>
+#include <Acem/Common/AcemDefine.mqh>
 #include <Acem/Draw/AcemChartPoint.mqh>
 
 class CAcemFreeCurveData : public CList
@@ -18,6 +19,7 @@ private:
     color m_lineColor;
     int m_lineWidth;
     string m_strLineDataPrefix;
+    eLineDirection m_lineDirection;
 
 public:
     CAcemFreeCurveData();
@@ -29,6 +31,8 @@ public:
     int getLineWidth() {return m_lineWidth;};
     void setLineDataPrefix(string strPrefix) {m_strLineDataPrefix = strPrefix;};
     string getLineDataPrefix() {return m_strLineDataPrefix;};
+    void setLineDirection(eLineDirection direction) {m_lineDirection = direction;};
+    eLineDirection getLineDirection() {return m_lineDirection;};
 };
 //+------------------------------------------------------------------+
 //|                                                                  |
