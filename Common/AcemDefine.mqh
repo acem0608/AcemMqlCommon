@@ -46,6 +46,9 @@
 
 #define ACEM_FREECURVE_DATA_PREFIX "AcemFcData"
 
+#define VK_SHIFT 0x10
+#define VK_CONTROL 0x11
+
 enum eInputKeyCode
 {
     ACEM_KEYCODE_ESC = 27,// ESC
