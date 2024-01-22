@@ -38,6 +38,7 @@
 #define ACEM_SYNC_BASE_LINE_NAME "AcemSyncBaseLine"
 #define ACEM_CHART_HIDE_CANVAS "AcemChartHide"
 #define ACEM_FREE_CUREVE_CANVAS_NAME "AcemFreeCurveCanvas"
+#define ACEM_FREE_CUREVE_ICON_NAME "AcemFreeCurveIcon"
 
 #define DUMMY_RECT_NAME "dummyRect"
 #define DUMMY_CHANNEL_NAME "dummyChannel"
@@ -100,6 +101,13 @@ enum eLineDirection {
     ACEM_DIRECTION_LEFT,
     ACEM_DIRECTION_DOWN,
     ACEM_DIRECTION_RIGHT,
+};
+
+enum eDrawFreeCurveMode {
+    FreeCurve_InputMode,
+    FreeCurve_DelMode,
+    FreeCurve_DeletingMode,
+    FreeCurve_Invisible
 };
 
 #endif
