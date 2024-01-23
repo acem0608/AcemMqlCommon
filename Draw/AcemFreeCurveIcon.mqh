@@ -44,6 +44,9 @@ CAcemFreeCurveIcon::~CAcemFreeCurveIcon()
 
 bool CAcemFreeCurveIcon::init()
 {
+    if (ObjectFind(ChartID(), m_canvasName) >= 0) {
+        ObjectDelete(m_canvasName);
+    }
     if (!CreateBitmapLabel(m_canvasName, 0, 0, 16, 16, COLOR_FORMAT_ARGB_NORMALIZE))
     {
         return (false);
@@ -87,6 +90,7 @@ bool CAcemFreeCurveIcon::setIcon(eDrawFreeCurveMode mode)
             0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000};
 
         ArrayCopy(m_pixels, aFig);
+        Update();
     }
 
     if (mode == FreeCurve_DelMode)
@@ -110,6 +114,7 @@ bool CAcemFreeCurveIcon::setIcon(eDrawFreeCurveMode mode)
             0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xFF000000, 0xFFFFFFFF, 0xFF000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000};
 
         ArrayCopy(m_pixels, aFig);
+        Update();
     }
 
     if (mode == FreeCurve_Invisible)
@@ -133,9 +138,9 @@ bool CAcemFreeCurveIcon::setIcon(eDrawFreeCurveMode mode)
             0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000};
 
         ArrayCopy(m_pixels, aFig);
+        Update();
     }
 
-    Update();
     return true;
 }
 
