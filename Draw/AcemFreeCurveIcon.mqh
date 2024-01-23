@@ -45,7 +45,7 @@ CAcemFreeCurveIcon::~CAcemFreeCurveIcon()
 bool CAcemFreeCurveIcon::init()
 {
     if (ObjectFind(ChartID(), m_canvasName) >= 0) {
-        ObjectDelete(m_canvasName);
+        ObjectDelete(ChartID(), m_canvasName);
     }
     if (!CreateBitmapLabel(m_canvasName, 0, 0, 16, 16, COLOR_FORMAT_ARGB_NORMALIZE))
     {
