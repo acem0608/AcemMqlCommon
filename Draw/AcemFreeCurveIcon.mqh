@@ -61,9 +61,9 @@ bool CAcemFreeCurveIcon::init()
 
 bool CAcemFreeCurveIcon::deinit()
 {
+    Erase(0x00000000);
+    Update();
     ObjectDelete(ChartID(), ACEM_FREE_CUREVE_ICON_NAME);
-//    Erase(0x00000000);
-//    Update();
 //    Destroy();
     return true;
 }
