@@ -8,9 +8,9 @@
 #property version "1.00"
 #property strict
 
-#include <Acem/Draw/AcemBaseCanvas.mqh>
+#include <Acem/Draw/AcemWindowFillCanvas.mqh>
 
-class CAcemFreeCurveCanvas : public CAcemBaseCanvas
+class CAcemFreeCurveCanvas : public CAcemWindowFillCanvas
 {
 private:
     CAcemFreeCurveCanvas();
@@ -25,7 +25,7 @@ public:
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-CAcemFreeCurveCanvas::CAcemFreeCurveCanvas(string canvasName) : CAcemBaseCanvas(canvasName)
+CAcemFreeCurveCanvas::CAcemFreeCurveCanvas(string canvasName) : CAcemWindowFillCanvas(canvasName)
 {
 }
 //+------------------------------------------------------------------+
@@ -35,16 +35,7 @@ CAcemFreeCurveCanvas::~CAcemFreeCurveCanvas()
 {
 }
 //+------------------------------------------------------------------+
-/*
-bool CAcemFreeCurveCanvas::init()
-{
-    CAcemBaseCanvas::init();
-    
-    m_canvas.FillRectangle(0, 0, m_width, m_height, ColorToARGB((color)ChartGetInteger(ChartID(), CHART_COLOR_BACKGROUND));
 
-    return true;
-}
-*/
 void CAcemFreeCurveCanvas::drawLine(int x1, int y1, int x2, int y2, int lineWidth, color lineColor, bool bUpdate)
 {
     if (lineWidth == 1) {
@@ -74,8 +65,7 @@ void CAcemFreeCurveCanvas::drawLine(int x1, int y1, int x2, int y2, int lineWidt
         case ACEM_DIRECTION_RIGHT:
         {
             int offset;
-            int maxOffset = rad + MathMod(lineWidth, 2) - 1;
-            int wy;
+            int maxOffset = rad + int(MathMod(lineWidth, 2)) - 1;
             for (offset = -rad; offset < maxOffset; offset++) {
                 Line(x1, y1 + offset, x2, y2 + offset, ColorToARGB(lineColor));
             }
@@ -84,8 +74,7 @@ void CAcemFreeCurveCanvas::drawLine(int x1, int y1, int x2, int y2, int lineWidt
         case ACEM_DIRECTION_UP:
         {
             int offset;
-            int maxOffset = rad + MathMod(lineWidth, 2) - 1;
-            int wy;
+            int maxOffset = rad + int(MathMod(lineWidth, 2)) - 1;
             for (offset = -rad; offset < maxOffset; offset++) {
                 Line(x1 + offset, y1, x2 + offset, y2, ColorToARGB(lineColor));
             }
@@ -94,8 +83,7 @@ void CAcemFreeCurveCanvas::drawLine(int x1, int y1, int x2, int y2, int lineWidt
         case ACEM_DIRECTION_LEFT:
         {
             int offset;
-            int maxOffset = rad + MathMod(lineWidth, 2) - 1;
-            int wy;
+            int maxOffset = rad + int(MathMod(lineWidth, 2)) - 1;
             for (offset = -rad; offset < maxOffset; offset++) {
                 Line(x1, y1 - offset, x2, y2 - offset, ColorToARGB(lineColor));
             }
@@ -104,8 +92,7 @@ void CAcemFreeCurveCanvas::drawLine(int x1, int y1, int x2, int y2, int lineWidt
         case ACEM_DIRECTION_DOWN:
         {
             int offset;
-            int maxOffset = rad + MathMod(lineWidth, 2) - 1;
-            int wy;
+            int maxOffset = rad + int(MathMod(lineWidth, 2)) - 1;
             for (offset = -rad; offset < maxOffset; offset++) {
                 Line(x1 - offset, y1, x2 - offset, y2, ColorToARGB(lineColor));
             }

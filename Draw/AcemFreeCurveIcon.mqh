@@ -8,14 +8,13 @@
 #property version "1.00"
 #property strict
 
-#include <Canvas/Canvas.mqh>
 #include <Acem/Common/AcemDefine.mqh>
+#include <Acem/Draw/AcemBaseCanvas.mqh>
 
-class CAcemFreeCurveIcon : public CCanvas
+class CAcemFreeCurveIcon : public CAcemBaseCanvas
 {
-private:
-    CAcemFreeCurveIcon(){};
-    string m_canvasName;
+protected:
+    CAcemFreeCurveIcon() {};
 
 public:
     CAcemFreeCurveIcon(string canvasName);
@@ -25,14 +24,12 @@ public:
     bool deinit();
 
     bool setIcon(eDrawFreeCurveMode mode);
-    void moveIcon(int x, int y);
 };
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-CAcemFreeCurveIcon::CAcemFreeCurveIcon(string canvasName)
+CAcemFreeCurveIcon::CAcemFreeCurveIcon(string canvasName) : CAcemBaseCanvas(canvasName)
 {
-    m_canvasName = canvasName;
 }
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -142,13 +139,4 @@ bool CAcemFreeCurveIcon::setIcon(eDrawFreeCurveMode mode)
     }
 
     return true;
-}
-
-void CAcemFreeCurveIcon::moveIcon(int x, int y)
-{
-    if (ObjectFind(ChartID(), m_canvasName) >= 0)
-    {
-        ObjectSetInteger(ChartID(), m_canvasName, OBJPROP_XDISTANCE, x);
-        ObjectSetInteger(ChartID(), m_canvasName, OBJPROP_YDISTANCE, y);
-    }
 }
