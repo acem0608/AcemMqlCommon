@@ -21,7 +21,6 @@ public:
     ~CAcemFreeCurveIcon();
 
     bool init();
-    bool deinit();
 
     bool setIcon(eDrawFreeCurveMode mode);
 };
@@ -53,12 +52,6 @@ bool CAcemFreeCurveIcon::init()
     ObjectSetInteger(0, m_canvasName, OBJPROP_BACK, false);
     ObjectSetInteger(ChartID(), m_canvasName, OBJPROP_ZORDER, 1);
 
-    return true;
-}
-
-bool CAcemFreeCurveIcon::deinit()
-{
-    Destroy();
     return true;
 }
 
