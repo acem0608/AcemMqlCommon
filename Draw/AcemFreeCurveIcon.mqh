@@ -50,7 +50,6 @@ bool CAcemFreeCurveIcon::init()
     ObjectSetInteger(0, m_canvasName, OBJPROP_CORNER, CORNER_LEFT_UPPER);
     ObjectSetInteger(0, m_canvasName, OBJPROP_ANCHOR, ANCHOR_LEFT_LOWER);
     ObjectSetInteger(0, m_canvasName, OBJPROP_BACK, false);
-    ObjectSetInteger(ChartID(), m_canvasName, OBJPROP_ZORDER, 1);
 
     return true;
 }
