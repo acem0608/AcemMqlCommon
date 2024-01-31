@@ -33,6 +33,8 @@ public:
     string getLineDataPrefix() {return m_strLineDataPrefix;};
     void setLineDirection(eLineDirection direction) {m_lineDirection = direction;};
     eLineDirection getLineDirection() {return m_lineDirection;};
+
+    void Dump();
 };
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -49,3 +51,16 @@ CAcemFreeCurveData::~CAcemFreeCurveData()
     Clear();
 }
 //+------------------------------------------------------------------+
+
+void CAcemFreeCurveData::Dump()
+{
+    int currentIndex = m_curr_idx;
+    CAcemChartPoint* pPoint;
+    datetime time;
+    double price;
+    for (pPoint = GetFirstNode(); pPoint != NULL; pPoint = GetNextNode()) {
+        pPoint.getTimePrice(time, price);
+        Print(IntegerToString(m_curr_idx) + " : " + TimeToString(time) + " " + DoubleToString(price));
+    }
+    GetNodeAtIndex(currentIndex);
+}

@@ -81,7 +81,7 @@ bool CAcemBase::OnChartEvent(int id, long lparam, double dparam, string sparam)
         break;
     case CHARTEVENT_OBJECT_CLICK:
         {
-            OnMouseMove(id, lparam, dparam, sparam);
+            OnObjectClick(id, lparam, dparam, sparam);
         }
         break;
     case CHARTEVENT_OBJECT_DRAG:

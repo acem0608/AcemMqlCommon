@@ -31,7 +31,7 @@
 
 int WindowFirstVisibleBar()
 {
-    int firstBarIndex = ChartGetInteger(0,CHART_FIRST_VISIBLE_BAR,0);
+    int firstBarIndex = (int)ChartGetInteger(0,CHART_FIRST_VISIBLE_BAR,0);
     
     return firstBarIndex;
 }
@@ -39,7 +39,7 @@ int WindowFirstVisibleBar()
 
 int WindowBarsPerChart()
 {
-    int chartBarNum = ChartGetInteger(0,CHART_VISIBLE_BARS,0);
+    int chartBarNum = (int)ChartGetInteger(0,CHART_VISIBLE_BARS,0);
     
     return chartBarNum;
 }

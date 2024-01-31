@@ -110,7 +110,8 @@ enum eDrawFreeCurveMode {
     FreeCurve_InputMode,
     FreeCurve_DelMode,
     FreeCurve_DeletingMode,
-    FreeCurve_Invisible
+    FreeCurve_InvisibleMode,
+    FreeCurve_SplitMode
 };
 
 #endif

@@ -39,7 +39,7 @@ bool CAcemWindowFillCanvas::init()
     int width = (int)ChartGetInteger(ChartID(), CHART_WIDTH_IN_PIXELS);
     int height = (int)ChartGetInteger(ChartID(), CHART_HEIGHT_IN_PIXELS);
 
-    return init(0, 0, width, height);
+    return CAcemBaseCanvas::init(0, 0, width, height);
 }
 
 void CAcemWindowFillCanvas::resize()
@@ -47,5 +47,5 @@ void CAcemWindowFillCanvas::resize()
     int width = (int)ChartGetInteger(ChartID(), CHART_WIDTH_IN_PIXELS);
     int height = (int)ChartGetInteger(ChartID(), CHART_HEIGHT_IN_PIXELS);
 
-    resize(width, height);
+    CAcemBaseCanvas::resize(width, height);
 }
