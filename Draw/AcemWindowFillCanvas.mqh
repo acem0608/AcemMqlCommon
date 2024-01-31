@@ -20,6 +20,7 @@ public:
     ~CAcemWindowFillCanvas();
     virtual bool init();
     virtual void resize();
+    virtual void minimize();
 };
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -39,7 +40,9 @@ bool CAcemWindowFillCanvas::init()
     int width = (int)ChartGetInteger(ChartID(), CHART_WIDTH_IN_PIXELS);
     int height = (int)ChartGetInteger(ChartID(), CHART_HEIGHT_IN_PIXELS);
 
-    return CAcemBaseCanvas::init(0, 0, width, height);
+    bool retc = CAcemBaseCanvas::init(0, 0, width, height);
+    ObjectSetInteger(ChartID(), m_canvasName, OBJPROP_SELECTABLE, false);
+    return retc;
 }
 
 void CAcemWindowFillCanvas::resize()
@@ -48,4 +51,9 @@ void CAcemWindowFillCanvas::resize()
     int height = (int)ChartGetInteger(ChartID(), CHART_HEIGHT_IN_PIXELS);
 
     CAcemBaseCanvas::resize(width, height);
+}
+
+void CAcemWindowFillCanvas::minimize()
+{
+    CAcemBaseCanvas::resize(3, 3);
 }
