@@ -35,8 +35,9 @@
 #define ACEM_SYNC_OTHER_CHART_ADD "AcemSyncSAd"
 #define ACEM_SYNC_OTHER_CHART_MOD "AcemSyncSmd"
 
-#define ACEM_SYNC_BASE_LINE_NAME "AcemSyncBaseLine"
-#define ACEM_CHART_HIDE_CANVAS "AcemChartHide"
+#define ACEM_SYNC_SHOW_BASE_LINE_NAME "AcemSyncShowBaseLine"
+#define ACEM_SYNC_HIDE_BASE_LINE_NAME "AcemSyncHideBaseLine"
+//#define ACEM_CHART_HIDE_CANVAS "AcemChartHide"
 #define ACEM_FREE_CUREVE_CANVAS_NAME "AcemFreeCurveCanvas"
 #define ACEM_FREE_CUREVE_ICON_NAME "AcemFreeCurveIcon"
 

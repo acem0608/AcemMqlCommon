@@ -8,6 +8,7 @@
 #property version "1.00"
 #property strict
 
+#include <Acem/Common/AcemDefine.mqh>
 #include <Acem/Draw/AcemWindowFillCanvas.mqh>
 
 class CAcemFreeCurveCanvas : public CAcemWindowFillCanvas

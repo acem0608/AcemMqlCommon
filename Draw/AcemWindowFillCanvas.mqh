@@ -50,10 +50,10 @@ void CAcemWindowFillCanvas::resize()
     int width = (int)ChartGetInteger(ChartID(), CHART_WIDTH_IN_PIXELS);
     int height = (int)ChartGetInteger(ChartID(), CHART_HEIGHT_IN_PIXELS);
 
-    CAcemBaseCanvas::resize(width, height);
+    CAcemBaseCanvas::resize(width, height, true);
 }
 
 void CAcemWindowFillCanvas::minimize()
 {
-    CAcemBaseCanvas::resize(3, 3);
+    CAcemBaseCanvas::resize(3, 3, true);
 }
