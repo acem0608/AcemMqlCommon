@@ -8,6 +8,7 @@
 #property version   "1.00"
 #property strict
 
+#include <Acem/common/AcemUtility.mqh>
 #include <Acem/Draw/AcemBaseCanvas.mqh>
 
 struct SVlineCanvasParam
@@ -106,7 +107,7 @@ bool CAcemVlineCanvas::deinit(const int reason)
 void CAcemVlineCanvas::resize(bool bUpdate)
 {
     int height = (int)ChartGetInteger(ChartID(), CHART_HEIGHT_IN_PIXELS);
-    resize(m_lineWidth, height, bUpdate);
+    CAcemBaseCanvas::resize(m_lineWidth, height, bUpdate);
 }
 
 void CAcemVlineCanvas::move(int x)
@@ -119,11 +120,9 @@ void CAcemVlineCanvas::move(int x)
 
 datetime CAcemVlineCanvas::getCurrentTime()
 {
-    int subWnd = 0;
-    double price = 0.0;
     datetime currentTime;
-    int posY = 0;
-    ChartXYToTimePrice(0, m_posX, posY, subWnd, currentTime, price);
+    currentTime = convPosXToTime(ChartID(), m_posX, true);
+
     return currentTime;
 }
 
@@ -139,7 +138,7 @@ void CAcemVlineCanvas::loadParam()
     string strParam;
     strParam = ObjectGetString(ChartID(), m_canvasName, OBJPROP_TEXT);
     int posX;
-    posX = (int)StrToInteger(strParam);
+    posX = (int)StringToInteger(strParam);
 }
 
 void CAcemVlineCanvas::setParam(SVlineCanvasParam& param)
@@ -154,7 +153,7 @@ bool CAcemVlineCanvas::getParam(SVlineCanvasParam& param)
     
     string strParam;
     strParam = ObjectGetString(ChartID(), m_canvasName, OBJPROP_TEXT);
-    param.posX = (int)StrToInteger(strParam);
+    param.posX = (int)StringToInteger(strParam);
     
     return true;
 }
