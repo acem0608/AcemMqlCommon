@@ -34,6 +34,7 @@
 #define ACEM_SYNC_DEL_CODE "AcemSyncDel"
 #define ACEM_SYNC_OTHER_CHART_ADD "AcemSyncSAd"
 #define ACEM_SYNC_OTHER_CHART_MOD "AcemSyncSmd"
+#define ACEM_CMD_SYNC_CHART_POS "AcemChartSync"
 
 #define ACEM_SYNC_SHOW_BASE_LINE_NAME "AcemSyncShowBaseLine"
 #define ACEM_SYNC_HIDE_BASE_LINE_NAME "AcemSyncHideBaseLine"
