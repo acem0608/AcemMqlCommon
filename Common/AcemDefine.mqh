@@ -38,7 +38,7 @@
 
 #define ACEM_SYNC_SHOW_BASE_LINE_NAME "AcemSyncShowBaseLine"
 #define ACEM_SYNC_HIDE_BASE_LINE_NAME "AcemSyncHideBaseLine"
-//#define ACEM_CHART_HIDE_CANVAS "AcemChartHide"
+#define ACEM__HIDE_RIGHT_CANVAS "AcemHideRightCanvas"
 #define ACEM_FREE_CUREVE_CANVAS_NAME "AcemFreeCurveCanvas"
 #define ACEM_FREE_CUREVE_ICON_NAME "AcemFreeCurveIcon"
 
