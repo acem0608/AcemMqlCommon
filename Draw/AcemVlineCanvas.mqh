@@ -28,7 +28,7 @@ public:
     CAcemVlineCanvas(string lineName, int width);
     ~CAcemVlineCanvas();
     virtual bool init();
-    bool deinit(const int reason);
+//    bool deinit(const int reason);
     void setLineWidth(int width) { m_lineWidth = width; };
     int getLineWidth() { return m_lineWidth; };
     void resize(bool bUpdate);
@@ -78,7 +78,7 @@ bool CAcemVlineCanvas::init()
 
     return true;
 }
-
+/*
 bool CAcemVlineCanvas::deinit(const int reason)
 {
     switch (reason) {
@@ -103,7 +103,7 @@ bool CAcemVlineCanvas::deinit(const int reason)
     }
     return true;
 }
-
+*/
 void CAcemVlineCanvas::resize(bool bUpdate)
 {
     int height = (int)ChartGetInteger(ChartID(), CHART_HEIGHT_IN_PIXELS);
@@ -154,6 +154,5 @@ bool CAcemVlineCanvas::getParam(SVlineCanvasParam& param)
     string strParam;
     strParam = ObjectGetString(ChartID(), m_canvasName, OBJPROP_TEXT);
     param.posX = (int)StringToInteger(strParam);
-    
     return true;
 }
