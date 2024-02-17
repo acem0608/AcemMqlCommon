@@ -25,12 +25,12 @@ protected:
     int m_lineWidth;
     int m_posX;
 public:
-    CAcemVlineCanvas(string lineName, int width);
+    CAcemVlineCanvas(string lineName);
     ~CAcemVlineCanvas();
     virtual bool init();
 //    bool deinit(const int reason);
-    void setLineWidth(int width) { m_lineWidth = width; };
-    int getLineWidth() { return m_lineWidth; };
+//    void setLineWidth(int width) { m_lineWidth = width; };
+//    int getLineWidth() { return m_lineWidth; };
     void resize(bool bUpdate);
     void move(int x);
     int getPosX() {return m_posX;};
@@ -43,11 +43,12 @@ public:
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-CAcemVlineCanvas::CAcemVlineCanvas(string lineName, int width)
+
+CAcemVlineCanvas::CAcemVlineCanvas(string lineName) : CAcemBaseCanvas(lineName)
 {
-    m_canvasName = lineName;
-    m_lineWidth = width;
+    m_lineWidth = 1;
 }
+
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
@@ -57,6 +58,7 @@ CAcemVlineCanvas::~CAcemVlineCanvas()
 //+------------------------------------------------------------------+
 bool CAcemVlineCanvas::init()
 {
+Print(__FUNCTION__ + " start");
     int height = (int)ChartGetInteger(ChartID(), CHART_HEIGHT_IN_PIXELS);
     int y = 0;
     int x = 0;
@@ -76,65 +78,53 @@ bool CAcemVlineCanvas::init()
     move(param.posX);
     resize(false);
 
+Print(__FUNCTION__ + " end");
     return true;
 }
-/*
-bool CAcemVlineCanvas::deinit(const int reason)
-{
-    switch (reason) {
-        case REASON_REMOVE:
-            {
-                Destroy();
-            }
-            break;
-        case REASON_PROGRAM:
-        case REASON_CHARTCLOSE:
-        case REASON_CLOSE:
-        case REASON_RECOMPILE:
-        case REASON_CHARTCHANGE:
-        case REASON_PARAMETERS:
-        case REASON_ACCOUNT:
-        case REASON_TEMPLATE:
-        case REASON_INITFAILED:
-        default:
-            {
-            }
-            break;
-    }
-    return true;
-}
-*/
+
 void CAcemVlineCanvas::resize(bool bUpdate)
 {
+Print(__FUNCTION__ + " start");
     int height = (int)ChartGetInteger(ChartID(), CHART_HEIGHT_IN_PIXELS);
     CAcemBaseCanvas::resize(m_lineWidth, height, bUpdate);
+Print(__FUNCTION__ + " end");
 }
 
 void CAcemVlineCanvas::move(int x)
 {
+Print(__FUNCTION__ + " start");
     m_posX = x;
-    int pos = x - (int)(m_lineWidth / 2);
-    CAcemBaseCanvas::move(pos, 0);
+//    int pos = x - (int)(m_lineWidth / 2);
+    CAcemBaseCanvas::move(x, 0);
+Print("pos: " + IntegerToString(x));
     saveParam();
+Print(__FUNCTION__ + " end");
 }
 
 datetime CAcemVlineCanvas::getCurrentTime()
 {
+Print(__FUNCTION__ + " start");
     datetime currentTime;
     currentTime = convPosXToTime(ChartID(), m_posX, true);
 
+Print(__FUNCTION__ + " end");
     return currentTime;
 }
 
-void CAcemVlineCanvas::saveParam(){
+void CAcemVlineCanvas::saveParam()
+{
+Print(__FUNCTION__ + " start");
     string strParam;
     int posX = (int)ObjectGetInteger(ChartID(), m_canvasName, OBJPROP_XDISTANCE);
+Print("posX: " + IntegerToString(posX));
     strParam = IntegerToString(posX);
     ObjectSetString(ChartID(), m_canvasName, OBJPROP_TEXT, strParam);
+Print(__FUNCTION__ + " end");
 }
 
 void CAcemVlineCanvas::loadParam()
 {
+Print(__FUNCTION__ + " start");
     string strParam;
     strParam = ObjectGetString(ChartID(), m_canvasName, OBJPROP_TEXT);
     int posX;
@@ -143,16 +133,21 @@ void CAcemVlineCanvas::loadParam()
 
 void CAcemVlineCanvas::setParam(SVlineCanvasParam& param)
 {
+Print(__FUNCTION__ + " start");
+Print(__FUNCTION__ + " end");
 }
 
 bool CAcemVlineCanvas::getParam(SVlineCanvasParam& param)
 {
+Print(__FUNCTION__ + " start");
     if (ObjectFind(ChartID(), m_canvasName) < 0) {
+Print(__FUNCTION__ + " end1");
         return false;
     }
     
     string strParam;
     strParam = ObjectGetString(ChartID(), m_canvasName, OBJPROP_TEXT);
     param.posX = (int)StringToInteger(strParam);
+Print(__FUNCTION__ + " end2");
     return true;
 }
