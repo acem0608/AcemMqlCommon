@@ -71,7 +71,7 @@ bool CAcemVlineCanvas::init()
     getParam(param);
     if (param.posX == 0) {
         int chartWidth = (int)ChartGetInteger(ChartID(), CHART_WIDTH_IN_PIXELS);
-        param.posX = chartWidth / 2;
+        param.posX = (chartWidth / 5) * 4;
     }
     move(param.posX);
     resize(false);
