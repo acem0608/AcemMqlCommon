@@ -25,7 +25,7 @@ protected:
     int m_lineWidth;
     int m_posX;
 public:
-    CAcemVlineCanvas(string lineName, int width);
+    CAcemVlineCanvas(string lineName);
     ~CAcemVlineCanvas();
     virtual bool init();
 //    bool deinit(const int reason);
@@ -43,10 +43,10 @@ public:
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-CAcemVlineCanvas::CAcemVlineCanvas(string lineName, int width)
+CAcemVlineCanvas::CAcemVlineCanvas(string lineName) : CAcemBaseCanvas(lineName)
 {
-    m_canvasName = lineName;
-    m_lineWidth = width;
+//    m_canvasName = lineName;
+    m_lineWidth = 1;
 }
 //+------------------------------------------------------------------+
 //|                                                                  |
