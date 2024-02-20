@@ -1,1 +1,3 @@
 *.mqh  diff=sjis
+*.mq4  diff=sjis
+*.mq5  diff=sjis
