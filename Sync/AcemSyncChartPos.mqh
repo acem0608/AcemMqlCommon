@@ -87,7 +87,7 @@ CAcemSyncChartPos::~CAcemSyncChartPos()
 //+------------------------------------------------------------------+
 void CAcemSyncChartPos::init()
 {
-Print(__FUNCTION__ + " Start");
+debugPrint(__FUNCTION__ + " Start");
     m_hideRightCanvas.init();
     if (!IS_HIDE_RIGHT) {
         m_hideRightCanvas.resize(1,1);
@@ -124,16 +124,12 @@ Print(__FUNCTION__ + " Start");
     ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_ANCHOR, ANCHOR_RIGHT_LOWER); 
     ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_YDISTANCE, 0);                 // Y座標
 
-//    int syncPosX = (int)((ChartGetInteger(ChartID(), CHART_WIDTH_IN_PIXELS) / 5) * 4);
-//    syncPosX = shiftOnGridX(ChartID(),syncPosX);
     setBaseTimeLabelString();
     moveSupportObject();
 
-//    moveBaseLine(syncPosX);
-//    syncChart();
-
     redrawAll();
-Print(__FUNCTION__ + " End");
+
+debugPrint(__FUNCTION__ + " End");
 }
 
 void CAcemSyncChartPos::deinit(const int reason)
@@ -182,25 +178,6 @@ bool CAcemSyncChartPos::OnObjectChange(int id, long lparam, double dparam, strin
 
     return true;
 }
-
-/*
-bool CAcemSyncChartPos::OnObjectDelete(int id, long lparam, double dparam, string sparam)
-{
-    debugPrint("void CAcemSyncChartPos::OnObjectDelete(int id, long lparam, double dparam, string sparam)");
-    debugPrint(sparam);
-
-    if (sparam == ACEM_CHART_HIDE_CANVAS) {
-        debugPrint("Delete:" + ACEM_CHART_HIDE_CANVAS);
-    }
-
-    if (sparam == ACEM_SYNC_BASE_LINE_NAME) {
-        long chartId = ChartID();
-        ObjectCreate(chartId, ACEM_SYNC_BASE_LINE_NAME, OBJ_VLINE, 0, m_baseTime, 0, 0);
-        setBaseLineProp();
-    }
-    return true;
-}
-*/
 
 bool CAcemSyncChartPos::OnObjectDrag(int id, long lparam, double dparam, string sparam)
 {
@@ -278,29 +255,6 @@ bool CAcemSyncChartPos::OnChartChange(int id, long lparam, double dparam, string
     }
     
     return true;
-
-/*
-    debugPrint("void CAcemSyncChartPos::OnChartChange(int id, long lparam, double dparam, string sparam)");
-
-    if (m_chartBarNum != WindowBarsPerChart()) {
-        m_chartBarNum = WindowBarsPerChart();
-        int baseOffset = (int)MathRound(WindowBarsPerChart() * m_baseOffsetRatio);
-        int leftIndex = WindowFirstVisibleBar();
-        int shift = (leftIndex - m_baseIndex) - baseOffset;
-        m_baseXPos = convIndexToPosX(ChartID(), leftIndex - baseOffset);
-        ChartNavigate(ChartID(), CHART_CURRENT_POS, -shift);
-    } else {
-        if (ChartGetInteger(ChartID(), CHART_BRING_TO_TOP)) {
-            moveBaseLineToBasePos(ChartID());
-            syncOtherChart();
-        } else {
-            moveBaseLineToBasePos(ChartID());
-        }
-    }
-
-    ChartRedraw(ChartID());
-    return true;
-*/
 }
 
 bool CAcemSyncChartPos::OnCustomEvent(int id, long lparam, double dparam, string sparam)
@@ -320,8 +274,6 @@ void CAcemSyncChartPos::setHideLineProp()
     ObjectSetInteger(ChartID(), m_strHideLineNmae, OBJPROP_READONLY, false);
     ObjectSetInteger(ChartID(), m_strHideLineNmae, OBJPROP_HIDDEN, false);
     ObjectSetInteger(ChartID(), m_strHideLineNmae, OBJPROP_SELECTABLE, true);
-//    ObjectSetInteger(ChartID(), m_strHideLineNmae, OBJPROP_COLOR, ACEM_SYNC_POS_BASE_LINE_COLOR);
-//    ObjectSetInteger(ChartID(), m_strHideLineNmae, OBJPROP_WIDTH, ACEM_SYNC_POS_BASE_LINE_WIDTH);
     ObjectSetInteger(ChartID(), m_strHideLineNmae, OBJPROP_COLOR, 0x00FFFFFF);
     ObjectSetInteger(ChartID(), m_strHideLineNmae, OBJPROP_WIDTH, 1);
 
@@ -422,13 +374,6 @@ void CAcemSyncChartPos::moveBaseLine(int posX)
     posX = shiftOnGridX(ChartID(), posX);
     m_syncLineCnavas.move(posX);
     moveSupportObject();
-/*
-    if (IS_HIDE_RIGHT) {
-        int hideWidth = getHideWidth();
-        m_hideRightCanvas.resize(hideWidth, false);
-    }
-    ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_XDISTANCE, posX - 3);                // X座標
-*/
 }
 
 void CAcemSyncChartPos::moveSupportObject()
@@ -477,118 +422,4 @@ void CAcemSyncChartPos::syncOtherChart(datetime newTime)
     }
 }
 
-/*
-// 基準線の位置がX座標の位置になるようにチャートをシフトする
-void CAcemSyncChartPos::shiftChartToBaseLine()
-{
-    debugPrint("void CAcemSyncChartPos::shiftChartToBaseLine()");
 
-    long chartId = ChartID();
-    datetime currentTime = (datetime)ObjectGetInteger(chartId, ACEM_SYNC_BASE_LINE_NAME, OBJPROP_TIME);
-    int currentIndex = convTimeToIndex(chartId, currentTime);
-    int shift = m_baseIndex - currentIndex;
-    m_baseXPos = convTimeToPosX(chartId, currentTime);
-
-    ObjectSetInteger(chartId, ACEM_SYNC_BASE_LINE_NAME, OBJPROP_TIME, m_baseTime);
-    ChartNavigate(chartId, CHART_CURRENT_POS, -shift);
-    ChartRedraw(chartId);
-}
-
-void CAcemSyncChartPos::shiftChartToBaseLineOtherChart(long chartId, datetime currentTime)
-{
-    debugPrint("void CAcemSyncChartPos::shiftChartToBaseLineOtherChart(long chartId, datetime currentTime)");
-
-    datetime baseTime = (datetime)ObjectGetInteger(chartId, ACEM_SYNC_BASE_LINE_NAME, OBJPROP_TIME);
-    int baseIndex = convTimeToIndex(chartId, baseTime);
-    int shift = baseIndex - convTimeToIndex(chartId, currentTime);
-    ChartNavigate(chartId, CHART_CURRENT_POS, shift);
-    ChartRedraw(chartId);
-}
-
-void CAcemSyncChartPos::shiftBaseIndexToBasePos(long chartId)
-{
-    debugPrint("void CAcemSyncChartPos::shiftBaseIndexToBasePos(shiftBaseIndexToBasePos)");
-
-    datetime currentTime = (datetime)ObjectGetInteger(chartId, ACEM_SYNC_BASE_LINE_NAME, OBJPROP_TIME);
-    int currentIndex = convTimeToIndex(chartId, currentTime);
-    int shift = m_baseIndex - currentIndex;
-    m_baseIndex = currentIndex;
-    m_baseTime = currentTime;
-    ChartNavigate(chartId, CHART_CURRENT_POS, shift);
-    ChartRedraw(chartId);
-}
-
-// 基準線をX座標の位置となるように時間を設定する。
-void CAcemSyncChartPos::moveBaseLineToBasePos(long chartId)
-{
-    debugPrint("void CAcemSyncChartPos::moveBaseLineToBasePos(long chartId)");
-
-    m_baseTime = convPosXToTime(chartId, m_baseXPos);
-    m_baseIndex = convPosXToIndex(chartId, m_baseXPos);
-    ObjectSetInteger(chartId, ACEM_SYNC_BASE_LINE_NAME, OBJPROP_TIME, m_baseTime);
-    ChartRedraw(chartId);
-}
-
-int CAcemSyncChartPos::getOffsetIndex(int offset)
-{
-    debugPrint("void CAcemSyncChartPos::getOffsetIndex(int offset)");
-
-    int leftIndex = WindowFirstVisibleBar();
-    int offsetIndex = leftIndex - offset;
-
-    return offsetIndex;
-}
-
-void CAcemSyncChartPos::syncOtherChart()
-{
-    debugPrint("void CAcemSyncChartPos::syncOtherChart()");
-
-    // Print(ChartID()+" : " + m_baseIndex);
-    long targetId;
-    for (targetId = ChartFirst(); targetId != -1; targetId = ChartNext(targetId)) {
-        if (targetId == ChartID()) {
-            continue;
-        }
-
-        if (ChartSymbol(ChartID()) != ChartSymbol(targetId)) {
-            continue;
-        }
-
-        // 基準線がないのは対象外
-        if (ObjectFind(targetId, ACEM_SYNC_BASE_LINE_NAME) < 0) {
-            continue;
-        }
-
-        ObjectSetInteger(targetId, ACEM_SYNC_BASE_LINE_NAME, OBJPROP_TIME, m_baseTime);
-        EventChartCustom(targetId, 0, 0, 0.0, "AcemChartSync");
-
-        // shiftChartToBaseLineOtherChart(targetId, m_baseTime);
-        ChartRedraw(targetId);
-    }
-}
-
-void CAcemSyncChartPos::setOffsetRatio()
-{
-    debugPrint("void CAcemSyncChartPos::setOffsetRatio()");
-
-    int width = WindowBarsPerChart();
-    int leftIndex = WindowFirstVisibleBar();
-    int indexPos = leftIndex - m_baseIndex;
-    m_baseOffsetRatio = (double)indexPos / (double)width;
-    GlobalVariableSet(m_strGlobalBaseOffsetRatio, m_baseOffsetRatio);
-}
-
-void CAcemSyncChartPos::outputParm()
-{
-    debugPrint("void CAcemSyncChartPos::outputParm()");
-
-    GlobalVariableSet(m_strGlobalBaseOffsetRatio, m_baseOffsetRatio);
-}
-
-void CAcemSyncChartPos::deleteParm()
-{
-    debugPrint("void CAcemSyncChartPos::deleteParm()");
-
-    GlobalVariableDel(m_strGlobalBaseOffsetRatio);
-}
-*/

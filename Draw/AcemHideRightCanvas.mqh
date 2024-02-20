@@ -52,12 +52,11 @@ bool CAcemHideRightCanvas::init()
 
 void CAcemHideRightCanvas::resize(int width, bool bUpdate)
 {
-Print(__FUNCTION__ + " Start");
-printf("width: %d", width);
+debugPrint(__FUNCTION__ + " Start");
     int height = (int)ChartGetInteger(ChartID(), CHART_HEIGHT_IN_PIXELS);
     CAcemBaseCanvas::resize(width, height, bUpdate);
 //    color hideColor = ColorToARGB(color)ChartGetInteger(ChartID(), CHART_COLOR_BACKGROUND));
     uint hideColor = ColorToARGB((color)ChartGetInteger(ChartID(), CHART_COLOR_BACKGROUND), 255);
     fill(hideColor);
-Print(__FUNCTION__ + " End");
+debugPrint(__FUNCTION__ + " End");
 }
