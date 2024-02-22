@@ -238,19 +238,6 @@ bool CAcemSyncChartPos::OnChartChange(int id, long lparam, double dparam, string
         datetime newTime = convPosXToTime(ChartID(), posX, false);
         setBaseLineTime(newTime);
         redrawAll();
-/*
-        ObjectSetInteger(ChartID(), m_strHideLineNmae, OBJPROP_TIME, newTime);
-        setBaseTimeLabelString();
-        redrawAll();
-
-        long targetId;
-        for (targetId = ChartFirst(); targetId != -1; targetId = ChartNext(targetId)) {
-            if (isSyncChart(targetId)) {
-                ObjectSetInteger(targetId, m_strHideLineNmae, OBJPROP_TIME, newTime);
-                EventChartCustom(targetId, 0, 0, 0.0, ACEM_CMD_SYNC_CHART_POS);
-            }
-        }
-*/
         return true;
     }
     
