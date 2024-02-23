@@ -23,6 +23,8 @@ input color ACEM_SYNC_POS_BASE_LINE_COLOR = 0x00FFFFFF;        // 　　色
 //input eLineWidth ACEM_SYNC_POS_BASE_LINE_WIDTH = LINE_WIDTH_1; // 　　線幅
 input bool IS_HIDE_RIGHT = true;                               // 　　基準線の右側を隠す
 
+#define _ACEM_DEBUG
+
 class CAcemSyncChartPos : public CAcemBase
 {
 protected:
@@ -93,7 +95,15 @@ debugPrint(__FUNCTION__ + " Start");
         m_hideRightCanvas.resize(1,1);
     }
 
-    m_timeFrame = ChartPeriod(ChartID());
+    long timeFrameValue;
+    if (getParamValue(ChartID(), ACEM_PARAM_TIMEFRAME, timeFrameValue)) {
+        m_timeFrame = (ENUM_TIMEFRAMES)timeFrameValue;
+    } else {
+        m_timeFrame = ChartPeriod(ChartID());
+        setParamText(ChartID(), ACEM_PARAM_TIMEFRAME, m_timeFrame);
+    }
+    setParamText(ChartID(), ACEM_PARAM_TIMEFRAME, m_timeFrame);
+
     m_wndWidth = (int)ChartGetInteger(ChartID(), CHART_WIDTH_IN_PIXELS);
     m_wndHeight = (int)ChartGetInteger(ChartID(), CHART_HEIGHT_IN_PIXELS);
     m_leftIndex = WindowFirstVisibleBar();
@@ -105,14 +115,18 @@ debugPrint(__FUNCTION__ + " Start");
     m_syncLineCnavas.fill(ColorToARGB(ACEM_SYNC_POS_BASE_LINE_COLOR, 255));
     m_syncLineCnavas.Update();
     
-    datetime baseTime = getBaseTime();
     if (ObjectFind(ChartID(), m_strHideLineNmae) < 0) {
+        datetime baseTime = getBaseTime();
         ObjectCreate(ChartID(), m_strHideLineNmae, OBJ_VLINE, 0, baseTime, 0, 0);
         setHideLineProp();
-    } else {
-        ObjectSetInteger(ChartID(), m_strHideLineNmae, OBJPROP_TIME, baseTime);
+//    } else {
+//        ObjectSetInteger(ChartID(), m_strHideLineNmae, OBJPROP_TIME, baseTime);
     }
-
+{
+    datetime baseTime = (datetime)ObjectGetInteger(ChartID(), ACEM_SYNC_HIDE_BASE_LINE_NAME, OBJPROP_TIME, 0);
+debugPrint(__FUNCTION__ + " baseTime: " + TimeToString(baseTime));
+debugPrint(__FUNCTION__ + " baseTime(int): " + IntegerToString(baseTime));
+}
     ObjectCreate(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJ_LABEL, 0, 0, 0);
     ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_COLOR, clrYellow);    // 色設定
     ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_BACK, false);           // オブジェクトの背景表示設定
@@ -134,6 +148,7 @@ debugPrint(__FUNCTION__ + " End");
 
 void CAcemSyncChartPos::deinit(const int reason)
 {
+debugPrint(__FUNCTION__ + " Start");
     m_syncLineCnavas.deinit(reason);
     m_hideRightCanvas.deinit(reason);
     switch (reason) {
@@ -141,6 +156,7 @@ void CAcemSyncChartPos::deinit(const int reason)
             {
                 ObjectDelete(ChartID(), m_strHideLineNmae);
                 ObjectDelete(ChartID(), ACEM_SYNC_LINE_TIME_LABEL);
+                ObjectDelete(ChartID(), ACEM_PARAM_TIMEFRAME);
             }
             break;
         case REASON_PROGRAM:
@@ -157,6 +173,7 @@ void CAcemSyncChartPos::deinit(const int reason)
             }
             break;
     }
+debugPrint(__FUNCTION__ + " end");
 }
 bool CAcemSyncChartPos::OnObjectChange(int id, long lparam, double dparam, string sparam)
 {
@@ -195,6 +212,7 @@ bool CAcemSyncChartPos::OnObjectDrag(int id, long lparam, double dparam, string 
 
 bool CAcemSyncChartPos::OnChartChange(int id, long lparam, double dparam, string sparam)
 {
+debugPrint(__FUNCTION__ + " Start");
     // リサイズ
     int width = (int)ChartGetInteger(ChartID(), CHART_WIDTH_IN_PIXELS);
     int height = (int)ChartGetInteger(ChartID(), CHART_HEIGHT_IN_PIXELS);
@@ -208,7 +226,8 @@ bool CAcemSyncChartPos::OnChartChange(int id, long lparam, double dparam, string
         shiftBaseLineOnGrid();
         syncChart();        
         redrawAll();
-        
+
+debugPrint(__FUNCTION__ + " Resize end");
         return true;
     }
 
@@ -216,8 +235,10 @@ bool CAcemSyncChartPos::OnChartChange(int id, long lparam, double dparam, string
     ENUM_TIMEFRAMES timeFrame = ChartPeriod(ChartID());
     if (timeFrame != m_timeFrame) {
         m_timeFrame = timeFrame;
+        setParamText(ChartID(), ACEM_PARAM_TIMEFRAME, m_timeFrame);
         shiftBaseLineOnGrid();
         redrawAll();
+debugPrint(__FUNCTION__ + " TimeFrame end");
         return true;
     }
 
@@ -227,6 +248,7 @@ bool CAcemSyncChartPos::OnChartChange(int id, long lparam, double dparam, string
         m_chartScale = chartScale;
         shiftBaseLineOnGrid();        
         redrawAll();
+debugPrint(__FUNCTION__ + " Scale end");
         return true;
     }
     
@@ -238,14 +260,17 @@ bool CAcemSyncChartPos::OnChartChange(int id, long lparam, double dparam, string
         datetime newTime = convPosXToTime(ChartID(), posX, false);
         setBaseLineTime(newTime);
         redrawAll();
+debugPrint(__FUNCTION__ + " Scrolle end");
         return true;
     }
     
+debugPrint(__FUNCTION__ + " end");
     return true;
 }
 
 bool CAcemSyncChartPos::OnCustomEvent(int id, long lparam, double dparam, string sparam)
 {
+debugPrint(__FUNCTION__ + " start");
     if (ACEM_CMD_SYNC_CHART_POS == sparam) {
         if (!ChartGetInteger(ChartID(), CHART_BRING_TO_TOP)) {
             syncChart();
@@ -253,6 +278,7 @@ bool CAcemSyncChartPos::OnCustomEvent(int id, long lparam, double dparam, string
         }
     }
 
+debugPrint(__FUNCTION__ + " end");
     return true;
 }
 
@@ -276,6 +302,7 @@ void CAcemSyncChartPos::redrawAll()
 
 datetime CAcemSyncChartPos::getBaseTime()
 {
+debugPrint(__FUNCTION__ + " Start");
     datetime baseTime = 0;
     long targetId;
     for (targetId = ChartFirst(); targetId != -1; targetId = ChartNext(targetId)) {
@@ -285,33 +312,46 @@ datetime CAcemSyncChartPos::getBaseTime()
         baseTime = (datetime)ObjectGetInteger(targetId, ACEM_SYNC_HIDE_BASE_LINE_NAME, OBJPROP_TIME, 0);
 
         if (baseTime != 0) {
+debugPrint(__FUNCTION__ + " Other Chart");
             break;
         }
     }
-    
+
     if (baseTime == 0) {
         if (ObjectFind(ChartID(), ACEM_SYNC_HIDE_BASE_LINE_NAME) >= 0) {
             baseTime = m_syncLineCnavas.getCurrentTime();
+debugPrint(__FUNCTION__ + " ObjectFind");
         }
     }
 
     if (baseTime == 0) {
         baseTime = m_syncLineCnavas.getCurrentTime();
+debugPrint(__FUNCTION__ + " getCurrentTime");
     }
-    
+debugPrint(__FUNCTION__ + " baseTime: " + TimeToString(baseTime));
+debugPrint(__FUNCTION__ + " End");
     return baseTime;
 }
 
 void CAcemSyncChartPos::syncChart()
 {
+debugPrint(__FUNCTION__ + " Start");
     int basePosX = m_syncLineCnavas.getPosX();
     int basePosIndex = convPosXToIndex(ChartID(), basePosX);
+{
+if (ObjectFind(ChartID(), ACEM_SYNC_HIDE_BASE_LINE_NAME) < 0) {
+debugPrint(__FUNCTION__ + " " + ACEM_SYNC_HIDE_BASE_LINE_NAME + " Not Found");
+}
+}
     datetime baseTime = (datetime)ObjectGetInteger(ChartID(), ACEM_SYNC_HIDE_BASE_LINE_NAME, OBJPROP_TIME, 0);
+debugPrint(__FUNCTION__ + " baseTime: " + TimeToString(baseTime));
+debugPrint(__FUNCTION__ + " baseTime(int): " + IntegerToString(baseTime));
     setBaseTimeLabelString();
     int baseTimeIndex = convTimeToIndex(ChartID(), baseTime);
     int shift = basePosIndex - baseTimeIndex;
 
     ChartNavigate(ChartID(), CHART_CURRENT_POS, shift);
+debugPrint(__FUNCTION__ + " End");
 }
 
 bool CAcemSyncChartPos::isSyncChart(long targetId)
@@ -345,12 +385,16 @@ int CAcemSyncChartPos::getHideWidth()
 
 void CAcemSyncChartPos::shiftBaseLineOnGrid()
 {
+debugPrint(__FUNCTION__ + " Start");
     int posX = (int)ObjectGetInteger(ChartID(), m_strShowLineName, OBJPROP_XDISTANCE);
+debugPrint(__FUNCTION__ + " posX: " + IntegerToString(posX));
     moveBaseLine(posX);
+debugPrint(__FUNCTION__ + " End");
 }
 
 void CAcemSyncChartPos::moveBaseLine(int posX)
 {
+debugPrint(__FUNCTION__ + " Start");
     int width = (int)ChartGetInteger(ChartID(), CHART_WIDTH_IN_PIXELS);
     if (posX >= width) {
         posX = width - 10;
@@ -358,9 +402,12 @@ void CAcemSyncChartPos::moveBaseLine(int posX)
     if (posX <= 0) {
         posX = 10;
     }
+debugPrint(__FUNCTION__ + " posX: " + IntegerToString(posX));
     posX = shiftOnGridX(ChartID(), posX);
+debugPrint(__FUNCTION__ + " shiftOnGridX posX: " + IntegerToString(posX));
     m_syncLineCnavas.move(posX);
     moveSupportObject();
+debugPrint(__FUNCTION__ + " End");
 }
 
 void CAcemSyncChartPos::moveSupportObject()
