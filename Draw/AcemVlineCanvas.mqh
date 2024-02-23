@@ -34,7 +34,7 @@ public:
     void resize(bool bUpdate);
     void move(int x);
     int getPosX() {return m_posX;};
-    datetime getCurrentTime();
+    bool getCurrentTime(datetime& currentTime);
     void saveParam();
     void loadParam();
     void setParam(SVlineCanvasParam& param);
@@ -118,12 +118,13 @@ void CAcemVlineCanvas::move(int x)
     saveParam();
 }
 
-datetime CAcemVlineCanvas::getCurrentTime()
+bool CAcemVlineCanvas::getCurrentTime(datetime& currentTime)
 {
-    datetime currentTime;
-    currentTime = convPosXToTime(ChartID(), m_posX, true);
+    if (!convPosXToTime(ChartID(), m_posX, true, currentTime)) {
+        return false;
+    }
 
-    return currentTime;
+    return true;
 }
 
 void CAcemVlineCanvas::saveParam(){

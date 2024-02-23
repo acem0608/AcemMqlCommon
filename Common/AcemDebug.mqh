@@ -28,7 +28,7 @@
 
 void debugPrint(string strMsg)
 {
-#ifdef _ACEM_DEBUG
+//#ifdef _ACEM_DEBUG
     Print(IntegerToString(ChartID()) + " : " + strMsg);
-#endif
+//#endif
 }

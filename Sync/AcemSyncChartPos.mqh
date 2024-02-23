@@ -57,15 +57,15 @@ public:
     void setHideLineProp();
     void redrawAll();
     
-    datetime getBaseTime();
-    void syncChart();
+    bool getBaseTime(datetime& baseTime);
+    bool syncChart();
     bool isSyncChart(long targetId);
     int getHideWidth();
-    void shiftBaseLineOnGrid();
-    void moveBaseLine(int posX);
+    bool shiftBaseLineOnGrid();
+    bool moveBaseLine(int posX);
     string getBaseTimeString();
     void setBaseTimeLabelString();
-    void setBaseLineTime(datetime newTime);
+    bool setBaseLineTime(datetime newTime);
     void syncOtherChart(datetime newTime);
     void moveSupportObject();
 
@@ -116,17 +116,13 @@ debugPrint(__FUNCTION__ + " Start");
     m_syncLineCnavas.Update();
     
     if (ObjectFind(ChartID(), m_strHideLineNmae) < 0) {
-        datetime baseTime = getBaseTime();
-        ObjectCreate(ChartID(), m_strHideLineNmae, OBJ_VLINE, 0, baseTime, 0, 0);
-        setHideLineProp();
-//    } else {
-//        ObjectSetInteger(ChartID(), m_strHideLineNmae, OBJPROP_TIME, baseTime);
+        datetime baseTime;
+        if (getBaseTime(baseTime)) {
+            ObjectCreate(ChartID(), m_strHideLineNmae, OBJ_VLINE, 0, baseTime, 0, 0);
+            setHideLineProp();
+        }
     }
-{
-    datetime baseTime = (datetime)ObjectGetInteger(ChartID(), ACEM_SYNC_HIDE_BASE_LINE_NAME, OBJPROP_TIME, 0);
-debugPrint(__FUNCTION__ + " baseTime: " + TimeToString(baseTime));
-debugPrint(__FUNCTION__ + " baseTime(int): " + IntegerToString(baseTime));
-}
+
     ObjectCreate(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJ_LABEL, 0, 0, 0);
     ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_COLOR, clrYellow);    // 色設定
     ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_BACK, false);           // オブジェクトの背景表示設定
@@ -186,7 +182,9 @@ bool CAcemSyncChartPos::OnObjectChange(int id, long lparam, double dparam, strin
         datetime currnetTime = (datetime)ObjectGetInteger(ChartID(), m_strHideLineNmae, OBJPROP_TIME, 0);
         datetime inputTime = StringToTime(labelText);
         if (currnetTime != inputTime) {
-            setBaseLineTime(inputTime);
+            if (setBaseLineTime(inputTime)) {
+                return false;
+            }
         }
         ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_SELECTED, false);
         
@@ -200,11 +198,14 @@ bool CAcemSyncChartPos::OnObjectDrag(int id, long lparam, double dparam, string 
 {
     if (sparam == m_strShowLineName) {
         int posX = (int)ObjectGetInteger(ChartID(), m_strShowLineName, OBJPROP_XDISTANCE);
-        posX = shiftOnGridX(ChartID(), posX);
-        moveBaseLine(posX);
-        ObjectSetInteger(ChartID(), m_strShowLineName, OBJPROP_SELECTED, false);
-        syncChart();
-        redrawAll();
+        if(!shiftOnGridX(ChartID(), posX, posX)) {
+        }
+
+        if (moveBaseLine(posX)) {
+            ObjectSetInteger(ChartID(), m_strShowLineName, OBJPROP_SELECTED, false);
+            syncChart();
+            redrawAll();
+        }
     }
     
     return true;
@@ -223,9 +224,10 @@ debugPrint(__FUNCTION__ + " Start");
         m_syncLineCnavas.resize(false);
         m_syncLineCnavas.fill(ColorToARGB(ACEM_SYNC_POS_BASE_LINE_COLOR, 255));
 
-        shiftBaseLineOnGrid();
-        syncChart();        
-        redrawAll();
+        if (shiftBaseLineOnGrid()) {
+            syncChart();        
+            redrawAll();
+        }
 
 debugPrint(__FUNCTION__ + " Resize end");
         return true;
@@ -236,8 +238,9 @@ debugPrint(__FUNCTION__ + " Resize end");
     if (timeFrame != m_timeFrame) {
         m_timeFrame = timeFrame;
         setParamText(ChartID(), ACEM_PARAM_TIMEFRAME, m_timeFrame);
-        shiftBaseLineOnGrid();
-        redrawAll();
+        if (shiftBaseLineOnGrid()) {
+            redrawAll();
+        }
 debugPrint(__FUNCTION__ + " TimeFrame end");
         return true;
     }
@@ -257,9 +260,13 @@ debugPrint(__FUNCTION__ + " Scale end");
     if (m_leftIndex != leftIndex && ChartGetInteger(ChartID(), CHART_BRING_TO_TOP)) {
         m_leftIndex = leftIndex;
         int posX = m_syncLineCnavas.getPosX();
-        datetime newTime = convPosXToTime(ChartID(), posX, false);
-        setBaseLineTime(newTime);
-        redrawAll();
+        datetime newTime; 
+        if (!convPosXToTime(ChartID(), posX, false, newTime)) {
+            return false;
+        }
+        if (setBaseLineTime(newTime)) {
+            redrawAll();
+        }
 debugPrint(__FUNCTION__ + " Scrolle end");
         return true;
     }
@@ -300,10 +307,9 @@ void CAcemSyncChartPos::redrawAll()
     ChartRedraw();
 }
 
-datetime CAcemSyncChartPos::getBaseTime()
+bool CAcemSyncChartPos::getBaseTime(datetime& baseTime)
 {
 debugPrint(__FUNCTION__ + " Start");
-    datetime baseTime = 0;
     long targetId;
     for (targetId = ChartFirst(); targetId != -1; targetId = ChartNext(targetId)) {
         if (!isSyncChart(targetId)) {
@@ -312,46 +318,44 @@ debugPrint(__FUNCTION__ + " Start");
         baseTime = (datetime)ObjectGetInteger(targetId, ACEM_SYNC_HIDE_BASE_LINE_NAME, OBJPROP_TIME, 0);
 
         if (baseTime != 0) {
-debugPrint(__FUNCTION__ + " Other Chart");
             break;
         }
     }
 
     if (baseTime == 0) {
-        if (ObjectFind(ChartID(), ACEM_SYNC_HIDE_BASE_LINE_NAME) >= 0) {
-            baseTime = m_syncLineCnavas.getCurrentTime();
-debugPrint(__FUNCTION__ + " ObjectFind");
+        if (ObjectFind(ChartID(), ACEM_SYNC_HIDE_BASE_LINE_NAME) < 0) {
+            return false;
+        }
+
+        if (!m_syncLineCnavas.getCurrentTime(baseTime)) {
+            return false;
         }
     }
 
-    if (baseTime == 0) {
-        baseTime = m_syncLineCnavas.getCurrentTime();
-debugPrint(__FUNCTION__ + " getCurrentTime");
-    }
-debugPrint(__FUNCTION__ + " baseTime: " + TimeToString(baseTime));
-debugPrint(__FUNCTION__ + " End");
-    return baseTime;
+    return true;
 }
 
-void CAcemSyncChartPos::syncChart()
+bool CAcemSyncChartPos::syncChart()
 {
 debugPrint(__FUNCTION__ + " Start");
     int basePosX = m_syncLineCnavas.getPosX();
-    int basePosIndex = convPosXToIndex(ChartID(), basePosX);
-{
-if (ObjectFind(ChartID(), ACEM_SYNC_HIDE_BASE_LINE_NAME) < 0) {
-debugPrint(__FUNCTION__ + " " + ACEM_SYNC_HIDE_BASE_LINE_NAME + " Not Found");
-}
-}
+    int basePosIndex; 
+    if (!convPosXToIndex(ChartID(), basePosX, basePosIndex)) {
+        return false;
+    }
+
     datetime baseTime = (datetime)ObjectGetInteger(ChartID(), ACEM_SYNC_HIDE_BASE_LINE_NAME, OBJPROP_TIME, 0);
-debugPrint(__FUNCTION__ + " baseTime: " + TimeToString(baseTime));
-debugPrint(__FUNCTION__ + " baseTime(int): " + IntegerToString(baseTime));
+
     setBaseTimeLabelString();
-    int baseTimeIndex = convTimeToIndex(ChartID(), baseTime);
+    int baseTimeIndex;
+    if (!convTimeToIndex(ChartID(), baseTime, baseTimeIndex)) {
+        return false;
+    }
     int shift = basePosIndex - baseTimeIndex;
 
     ChartNavigate(ChartID(), CHART_CURRENT_POS, shift);
 debugPrint(__FUNCTION__ + " End");
+    return true;
 }
 
 bool CAcemSyncChartPos::isSyncChart(long targetId)
@@ -383,16 +387,18 @@ int CAcemSyncChartPos::getHideWidth()
     return hideWidth;
 }
 
-void CAcemSyncChartPos::shiftBaseLineOnGrid()
+bool CAcemSyncChartPos::shiftBaseLineOnGrid()
 {
 debugPrint(__FUNCTION__ + " Start");
     int posX = (int)ObjectGetInteger(ChartID(), m_strShowLineName, OBJPROP_XDISTANCE);
-debugPrint(__FUNCTION__ + " posX: " + IntegerToString(posX));
-    moveBaseLine(posX);
+    if (!moveBaseLine(posX)) {
+        return false;
+    }
+    return true;
 debugPrint(__FUNCTION__ + " End");
 }
 
-void CAcemSyncChartPos::moveBaseLine(int posX)
+bool CAcemSyncChartPos::moveBaseLine(int posX)
 {
 debugPrint(__FUNCTION__ + " Start");
     int width = (int)ChartGetInteger(ChartID(), CHART_WIDTH_IN_PIXELS);
@@ -402,12 +408,16 @@ debugPrint(__FUNCTION__ + " Start");
     if (posX <= 0) {
         posX = 10;
     }
-debugPrint(__FUNCTION__ + " posX: " + IntegerToString(posX));
-    posX = shiftOnGridX(ChartID(), posX);
-debugPrint(__FUNCTION__ + " shiftOnGridX posX: " + IntegerToString(posX));
+
+    if (!shiftOnGridX(ChartID(), posX, posX)) {
+        return false;
+    }
+
     m_syncLineCnavas.move(posX);
     moveSupportObject();
 debugPrint(__FUNCTION__ + " End");
+
+    return true;
 }
 
 void CAcemSyncChartPos::moveSupportObject()
@@ -434,13 +444,17 @@ void CAcemSyncChartPos::setBaseTimeLabelString()
     ObjectSetString(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_TEXT, baseTimeString);
 }
 
-void CAcemSyncChartPos::setBaseLineTime(datetime newTime)
+bool CAcemSyncChartPos::setBaseLineTime(datetime newTime)
 {
     ObjectSetInteger(ChartID(), m_strHideLineNmae, OBJPROP_TIME, newTime);
     setBaseTimeLabelString();
-    syncChart();
+    if (!syncChart()) {
+        return false;
+    }
 
     syncOtherChart(newTime);
+    
+    return true;
 }
 
 void CAcemSyncChartPos::syncOtherChart(datetime newTime)
@@ -455,5 +469,3 @@ void CAcemSyncChartPos::syncOtherChart(datetime newTime)
         }
     }
 }
-
-
