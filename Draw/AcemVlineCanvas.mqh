@@ -31,7 +31,7 @@ public:
 //    bool deinit(const int reason);
     void setLineWidth(int width) { m_lineWidth = width; };
     int getLineWidth() { return m_lineWidth; };
-    void resize(bool bUpdate);
+    bool resize(bool bUpdate);
     void move(int x);
     int getPosX() {return m_posX;};
     bool getCurrentTime(datetime& currentTime);
@@ -104,10 +104,10 @@ bool CAcemVlineCanvas::deinit(const int reason)
     return true;
 }
 */
-void CAcemVlineCanvas::resize(bool bUpdate)
+bool CAcemVlineCanvas::resize(bool bUpdate)
 {
     int height = (int)ChartGetInteger(ChartID(), CHART_HEIGHT_IN_PIXELS);
-    CAcemBaseCanvas::resize(m_lineWidth, height, bUpdate);
+    return CAcemBaseCanvas::resize(m_lineWidth, height, bUpdate);
 }
 
 void CAcemVlineCanvas::move(int x)

@@ -23,8 +23,6 @@ input color ACEM_SYNC_POS_BASE_LINE_COLOR = 0x00FFFFFF;        // 　　色
 //input eLineWidth ACEM_SYNC_POS_BASE_LINE_WIDTH = LINE_WIDTH_1; // 　　線幅
 input bool IS_HIDE_RIGHT = true;                               // 　　基準線の右側を隠す
 
-#define _ACEM_DEBUG
-
 class CAcemSyncChartPos : public CAcemBase
 {
 protected:
@@ -102,7 +100,7 @@ debugPrint(__FUNCTION__ + " Start");
         m_timeFrame = ChartPeriod(ChartID());
         setParamText(ChartID(), ACEM_PARAM_TIMEFRAME, m_timeFrame);
     }
-    setParamText(ChartID(), ACEM_PARAM_TIMEFRAME, m_timeFrame);
+//    setParamText(ChartID(), ACEM_PARAM_TIMEFRAME, m_timeFrame);
 
     m_wndWidth = (int)ChartGetInteger(ChartID(), CHART_WIDTH_IN_PIXELS);
     m_wndHeight = (int)ChartGetInteger(ChartID(), CHART_HEIGHT_IN_PIXELS);
@@ -113,26 +111,28 @@ debugPrint(__FUNCTION__ + " Start");
 
     m_syncLineCnavas.init();
     m_syncLineCnavas.fill(ColorToARGB(ACEM_SYNC_POS_BASE_LINE_COLOR, 255));
-    m_syncLineCnavas.Update();
+//    m_syncLineCnavas.Update();
     
     if (ObjectFind(ChartID(), m_strHideLineNmae) < 0) {
-        datetime baseTime;
+        datetime baseTime = datetime(0);
         if (getBaseTime(baseTime)) {
             ObjectCreate(ChartID(), m_strHideLineNmae, OBJ_VLINE, 0, baseTime, 0, 0);
             setHideLineProp();
         }
     }
 
-    ObjectCreate(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJ_LABEL, 0, 0, 0);
-    ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_COLOR, clrYellow);    // 色設定
-    ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_BACK, false);           // オブジェクトの背景表示設定
-    ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_SELECTABLE, true);     // オブジェクトの選択可否設定
-    ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_SELECTED, false);      // オブジェクトの選択状態
-    ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_HIDDEN, true);         // オブジェクトリスト表示設定
-    ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_FONTSIZE, 10);                   // フォントサイズ
-    ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_CORNER, CORNER_LEFT_LOWER);  // コーナーアンカー設定
-    ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_ANCHOR, ANCHOR_RIGHT_LOWER); 
-    ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_YDISTANCE, 0);                 // Y座標
+    if (ObjectFind(ChartID(), ACEM_SYNC_LINE_TIME_LABEL) < 0) {
+        ObjectCreate(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJ_LABEL, 0, 0, 0);
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_COLOR, clrYellow);    // 色設定
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_BACK, false);           // オブジェクトの背景表示設定
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_SELECTABLE, true);     // オブジェクトの選択可否設定
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_SELECTED, false);      // オブジェクトの選択状態
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_HIDDEN, false);         // オブジェクトリスト表示設定
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_FONTSIZE, 10);                   // フォントサイズ
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_CORNER, CORNER_LEFT_LOWER);  // コーナーアンカー設定
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_ANCHOR, ANCHOR_RIGHT_LOWER); 
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_YDISTANCE, 0);                 // Y座標
+    }
 
     setBaseTimeLabelString();
     moveSupportObject();
@@ -169,6 +169,7 @@ debugPrint(__FUNCTION__ + " Start");
             }
             break;
     }
+    ChartRedraw(ChartID());
 debugPrint(__FUNCTION__ + " end");
 }
 bool CAcemSyncChartPos::OnObjectChange(int id, long lparam, double dparam, string sparam)
@@ -249,8 +250,10 @@ debugPrint(__FUNCTION__ + " TimeFrame end");
     int chartScale = (int)ChartGetInteger(ChartID(), CHART_SCALE);
     if (m_chartScale != chartScale) {
         m_chartScale = chartScale;
-        shiftBaseLineOnGrid();        
-        redrawAll();
+        if (shiftBaseLineOnGrid()) {
+            syncChart();
+            redrawAll();
+        }
 debugPrint(__FUNCTION__ + " Scale end");
         return true;
     }
@@ -265,6 +268,7 @@ debugPrint(__FUNCTION__ + " Scale end");
             return false;
         }
         if (setBaseLineTime(newTime)) {
+            syncChart();
             redrawAll();
         }
 debugPrint(__FUNCTION__ + " Scrolle end");
@@ -292,7 +296,7 @@ debugPrint(__FUNCTION__ + " end");
 void CAcemSyncChartPos::setHideLineProp()
 {
     ObjectSetInteger(ChartID(), m_strHideLineNmae, OBJPROP_READONLY, false);
-    ObjectSetInteger(ChartID(), m_strHideLineNmae, OBJPROP_HIDDEN, false);
+    ObjectSetInteger(ChartID(), m_strHideLineNmae, OBJPROP_HIDDEN, true);
     ObjectSetInteger(ChartID(), m_strHideLineNmae, OBJPROP_SELECTABLE, true);
     ObjectSetInteger(ChartID(), m_strHideLineNmae, OBJPROP_COLOR, 0x00FFFFFF);
     ObjectSetInteger(ChartID(), m_strHideLineNmae, OBJPROP_WIDTH, 1);
@@ -324,12 +328,20 @@ debugPrint(__FUNCTION__ + " Start");
 
     if (baseTime == 0) {
         if (ObjectFind(ChartID(), ACEM_SYNC_HIDE_BASE_LINE_NAME) < 0) {
-            return false;
-        }
+            if (ObjectGetInteger(ChartID(), ACEM_SYNC_HIDE_BASE_LINE_NAME, OBJPROP_TIME, 0, baseTime)) {
+                return true;
+            }
+        } 
+    }
 
-        if (!m_syncLineCnavas.getCurrentTime(baseTime)) {
-            return false;
+    if (baseTime == 0) {
+        if (m_syncLineCnavas.getCurrentTime(baseTime)) {
+            return true;
         }
+    }
+    
+    if (baseTime == 0) {
+       return false;
     }
 
     return true;
@@ -341,6 +353,7 @@ debugPrint(__FUNCTION__ + " Start");
     int basePosX = m_syncLineCnavas.getPosX();
     int basePosIndex; 
     if (!convPosXToIndex(ChartID(), basePosX, basePosIndex)) {
+debugPrint(__FUNCTION__ + "false1 End");
         return false;
     }
 
@@ -349,12 +362,14 @@ debugPrint(__FUNCTION__ + " Start");
     setBaseTimeLabelString();
     int baseTimeIndex;
     if (!convTimeToIndex(ChartID(), baseTime, baseTimeIndex)) {
+debugPrint(__FUNCTION__ + "false2 End");
         return false;
     }
+
     int shift = basePosIndex - baseTimeIndex;
 
     ChartNavigate(ChartID(), CHART_CURRENT_POS, shift);
-debugPrint(__FUNCTION__ + " End");
+debugPrint(__FUNCTION__ + "true End");
     return true;
 }
 
