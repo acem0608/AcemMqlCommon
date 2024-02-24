@@ -30,7 +30,7 @@ protected:
     CAcemHideRightCanvas m_hideRightCanvas;
     int m_posX;
     datetime m_syncTime;
-    
+    bool m_isNeedRefresh;
     string m_strShowLineName;
     string m_strHideLineNmae;
 
@@ -50,6 +50,7 @@ public:
     virtual bool OnObjectChange(int id, long lparam, double dparam, string sparam);
     virtual bool OnObjectDrag(int id, long lparam, double dparam, string sparam);
     virtual bool OnChartChange(int id, long lparam, double dparam, string sparam);
+    virtual bool OnMouseMove(int id, long lparam, double dparam, string sparam);
     virtual bool OnCustomEvent(int id, long lparam, double dparam, string sparam);
 
     void setHideLineProp();
@@ -88,6 +89,8 @@ CAcemSyncChartPos::~CAcemSyncChartPos()
 void CAcemSyncChartPos::init()
 {
 debugPrint(__FUNCTION__ + " Start");
+    m_isNeedRefresh = true;
+
     m_hideRightCanvas.init();
     if (!IS_HIDE_RIGHT) {
         m_hideRightCanvas.resize(1,1);
@@ -279,6 +282,15 @@ debugPrint(__FUNCTION__ + " end");
     return true;
 }
 
+bool CAcemSyncChartPos::OnMouseMove(int id, long lparam, double dparam, string sparam)
+{
+    if (m_isNeedRefresh) {
+        redrawAll();
+        m_isNeedRefresh = false;
+    }
+
+    return true;
+}
 bool CAcemSyncChartPos::OnCustomEvent(int id, long lparam, double dparam, string sparam)
 {
 debugPrint(__FUNCTION__ + " start");
