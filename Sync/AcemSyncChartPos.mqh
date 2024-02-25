@@ -24,7 +24,8 @@ input string AcemSyncPos = "";                                 //-- 基準線の
 input color ACEM_SYNC_POS_BASE_LINE_COLOR = 0x00FFFFFF;        // 　　色
 //input eLineWidth ACEM_SYNC_POS_BASE_LINE_WIDTH = LINE_WIDTH_1; // 　　線幅
 input bool IS_HIDE_RIGHT = true;                               // 　　基準線の右側を隠す
-
+input eGmtTime CHART_LOCALE = GMT_P2; // チャートの標準時間（冬時間）
+input eSummerTime CHART_SUMMERTIME = SUMMER_TIME_AMERICA; // サマータイム
 class CAcemSyncChartPos : public CAcemBase
 {
 protected:
