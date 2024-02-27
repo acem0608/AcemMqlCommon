@@ -11,11 +11,6 @@
 #include <Acem/common/AcemUtility.mqh>
 #include <Acem/Draw/AcemBaseCanvas.mqh>
 
-struct SVlineCanvasParam
-{
-    int posX;
-};
-
 class CAcemVlineCanvas : public CAcemBaseCanvas
 {
 private:
@@ -28,32 +23,31 @@ public:
     CAcemVlineCanvas(string lineName);
     ~CAcemVlineCanvas();
     virtual bool init();
-//    bool deinit(const int reason);
+    bool deinit(const int reason);
     void setLineWidth(int width) { m_lineWidth = width; };
     int getLineWidth() { return m_lineWidth; };
     bool resize(bool bUpdate);
     void move(int x);
     int getPosX() {return m_posX;};
     bool getCurrentTime(datetime& currentTime);
-    void saveParam();
-    void loadParam();
-    void setParam(SVlineCanvasParam& param);
-    bool getParam(SVlineCanvasParam& param);
+    void clearParam();
 };
+
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
 CAcemVlineCanvas::CAcemVlineCanvas(string lineName) : CAcemBaseCanvas(lineName)
 {
-//    m_canvasName = lineName;
     m_lineWidth = 1;
 }
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
+
 CAcemVlineCanvas::~CAcemVlineCanvas()
 {
 }
+
 //+------------------------------------------------------------------+
 bool CAcemVlineCanvas::init()
 {
@@ -66,25 +60,29 @@ bool CAcemVlineCanvas::init()
     }
     ObjectSetInteger(ChartID(), m_canvasName, OBJPROP_SELECTABLE, true);
     ObjectSetInteger(ChartID(), m_canvasName, OBJPROP_HIDDEN, false);
-    
-    SVlineCanvasParam param;
-    getParam(param);
-    if (param.posX == 0) {
+
+    int posX;
+    if (!getParamInt(ChartID(), ACEM_PARAM_SYNC_POS, posX)) {
         int chartWidth = (int)ChartGetInteger(ChartID(), CHART_WIDTH_IN_PIXELS);
-        param.posX = (chartWidth / 5) * 4;
+        posX = (chartWidth / 5) * 4;
     }
-    move(param.posX);
+    move(posX);
+    setParamString(ChartID(), ACEM_PARAM_SYNC_POS_LINE_RCNAME, m_rcname);
+    debugPrint(__FUNCTION__ + " m_rcname: " + m_rcname);
     resize(false);
 
     return true;
 }
-/*
+
 bool CAcemVlineCanvas::deinit(const int reason)
 {
+    CAcemBaseCanvas::deinit(reason);
+
     switch (reason) {
         case REASON_REMOVE:
             {
-                Destroy();
+                ObjectDelete(ChartID(), ACEM_PARAM_SYNC_POS);
+                ObjectDelete(ChartID(), ACEM_PARAM_SYNC_POS_LINE_RCNAME);
             }
             break;
         case REASON_PROGRAM:
@@ -103,7 +101,7 @@ bool CAcemVlineCanvas::deinit(const int reason)
     }
     return true;
 }
-*/
+
 bool CAcemVlineCanvas::resize(bool bUpdate)
 {
     int height = (int)ChartGetInteger(ChartID(), CHART_HEIGHT_IN_PIXELS);
@@ -112,10 +110,12 @@ bool CAcemVlineCanvas::resize(bool bUpdate)
 
 void CAcemVlineCanvas::move(int x)
 {
+    if (m_posX == x) {
+        return;
+    }
     m_posX = x;
-    int pos = x - (int)(m_lineWidth / 2);
-    CAcemBaseCanvas::move(pos, 0);
-    saveParam();
+    CAcemBaseCanvas::move(m_posX, 0);
+    setParamLong(ChartID(), ACEM_PARAM_SYNC_POS, m_posX);
 }
 
 bool CAcemVlineCanvas::getCurrentTime(datetime& currentTime)
@@ -127,33 +127,9 @@ bool CAcemVlineCanvas::getCurrentTime(datetime& currentTime)
     return true;
 }
 
-void CAcemVlineCanvas::saveParam(){
-    string strParam;
-    int posX = (int)ObjectGetInteger(ChartID(), m_canvasName, OBJPROP_XDISTANCE);
-    strParam = IntegerToString(posX);
-    ObjectSetString(ChartID(), m_canvasName, OBJPROP_TEXT, strParam);
-}
-
-void CAcemVlineCanvas::loadParam()
+void CAcemVlineCanvas::clearParam()
 {
-    string strParam;
-    strParam = ObjectGetString(ChartID(), m_canvasName, OBJPROP_TEXT);
-    int posX;
-    posX = (int)StringToInteger(strParam);
-}
-
-void CAcemVlineCanvas::setParam(SVlineCanvasParam& param)
-{
-}
-
-bool CAcemVlineCanvas::getParam(SVlineCanvasParam& param)
-{
-    if (ObjectFind(ChartID(), m_canvasName) < 0) {
-        return false;
-    }
-    
-    string strParam;
-    strParam = ObjectGetString(ChartID(), m_canvasName, OBJPROP_TEXT);
-    param.posX = (int)StringToInteger(strParam);
-    return true;
+    m_posX = 0;
+    m_width = 0;
+    m_height = 0;
 }
