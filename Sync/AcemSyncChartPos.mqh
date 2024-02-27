@@ -57,6 +57,7 @@ public:
     virtual bool OnObjectDrag(int id, long lparam, double dparam, string sparam);
     virtual bool OnChartChange(int id, long lparam, double dparam, string sparam);
     virtual bool OnMouseMove(int id, long lparam, double dparam, string sparam);
+    virtual bool OnObjectDelete(int id, long lparam, double dparam, string sparam);
     virtual bool OnCustomEvent(int id, long lparam, double dparam, string sparam);
 
     void setHideLineProp();
@@ -73,6 +74,7 @@ public:
     bool setBaseLineTime(datetime newTime);
     void syncOtherChart(datetime newTime);
     void moveSupportObject();
+    void createTimeLabel();
 };
 
 //+------------------------------------------------------------------+
@@ -140,6 +142,8 @@ void CAcemSyncChartPos::init()
         }
     }
 
+    createTimeLabel();
+/*
     if (ObjectFind(ChartID(), ACEM_SYNC_LINE_TIME_LABEL) < 0) {
         ObjectCreate(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJ_LABEL, 0, 0, 0);
         ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_COLOR, clrYellow);          // 色設定
@@ -155,7 +159,7 @@ void CAcemSyncChartPos::init()
 
     setBaseTimeLabelString();
     moveSupportObject();
-
+*/
     redrawAll();
 
     debugPrint(__FUNCTION__ + " End");
@@ -345,6 +349,16 @@ bool CAcemSyncChartPos::OnMouseMove(int id, long lparam, double dparam, string s
     if (m_isNeedRefresh) {
         redrawAll();
         m_isNeedRefresh = false;
+    }
+
+    return true;
+}
+
+bool CAcemSyncChartPos::OnObjectDelete(int id, long lparam, double dparam, string sparam)
+{
+    if (sparam == ACEM_SYNC_LINE_TIME_LABEL) {
+        createTimeLabel();
+        ChartRedraw(ChartID());
     }
 
     return true;
@@ -589,4 +603,23 @@ void CAcemSyncChartPos::syncOtherChart(datetime newTime)
         }
     }
     debugPrint(__FUNCTION__ + " End");
+}
+
+void CAcemSyncChartPos::createTimeLabel()
+{
+    if (ObjectFind(ChartID(), ACEM_SYNC_LINE_TIME_LABEL) < 0) {
+        ObjectCreate(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJ_LABEL, 0, 0, 0);
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_COLOR, clrYellow);          // 色設定
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_BACK, false);               // オブジェクトの背景表示設定
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_SELECTABLE, true);          // オブジェクトの選択可否設定
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_SELECTED, false);           // オブジェクトの選択状態
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_HIDDEN, false);             // オブジェクトリスト表示設定
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_FONTSIZE, 10);              // フォントサイズ
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_CORNER, CORNER_LEFT_LOWER); // コーナーアンカー設定
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_ANCHOR, ANCHOR_RIGHT_LOWER);
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_YDISTANCE, 0); // Y座標
+    }
+
+    setBaseTimeLabelString();
+    moveSupportObject();
 }
