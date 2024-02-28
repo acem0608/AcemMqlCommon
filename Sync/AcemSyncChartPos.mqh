@@ -100,6 +100,11 @@ void CAcemSyncChartPos::init()
     m_bFailedMoveBaseLine = false;
     m_bFailedSyncChart = false;
 
+    bool bRebuild = true;
+    if (ObjectFind(ChartID(), ACEM_SYNC_SHOW_BASE_LINE_NAME) == 0) {
+        bRebuild = false;
+    }
+
     m_hideRightCanvas.init();
     if (!IS_HIDE_RIGHT) {
         m_hideRightCanvas.resize(1, 1);
@@ -143,6 +148,10 @@ void CAcemSyncChartPos::init()
     }
 
     createTimeLabel();
+    if (bRebuild) {
+        rebuildObject();
+    }
+
     redrawAll();
 
     debugPrint(__FUNCTION__ + " End");
@@ -339,6 +348,7 @@ bool CAcemSyncChartPos::OnMouseMove(int id, long lparam, double dparam, string s
 
 bool CAcemSyncChartPos::OnObjectDelete(int id, long lparam, double dparam, string sparam)
 {
+
     if (sparam == ACEM_SYNC_LINE_TIME_LABEL) {
         createTimeLabel();
         ChartRedraw(ChartID());
@@ -352,14 +362,9 @@ bool CAcemSyncChartPos::OnObjectDelete(int id, long lparam, double dparam, strin
                 m_syncLineCnavas.clearParam();
                 if (m_syncLineCnavas.init()) {
                     m_syncLineCnavas.resize(true);
-                    //redrawAll();
-                    Print(__FUNCTION__ + " m_syncLineCnavas.init Sucess " + ACEM_SYNC_SHOW_BASE_LINE_NAME);
-                } else {
-                    Print(__FUNCTION__ + " m_syncLineCnavas.init faile " + ACEM_SYNC_SHOW_BASE_LINE_NAME);
+                    ChartRedraw(ChartID());
                 }
             }
-        } else {
-            Print(__FUNCTION__ + " ObjectCreate faile " + ACEM_SYNC_SHOW_BASE_LINE_NAME);
         }
     }
 

@@ -129,7 +129,6 @@ bool CAcemVlineCanvas::getCurrentTime(datetime& currentTime)
 
 void CAcemVlineCanvas::clearParam()
 {
+    CAcemBaseCanvas::clearParam();
     m_posX = 0;
-    m_width = 0;
-    m_height = 0;
 }
