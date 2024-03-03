@@ -9,6 +9,7 @@
 #property strict
 
 #include <Acem/Common/AcemDefine.mqh>
+#include <Acem/Common/AcemUtility.mqh>
 #include <Acem/Draw/AcemWindowFillCanvas.mqh>
 
 class CAcemFreeCurveCanvas : public CAcemWindowFillCanvas
@@ -21,7 +22,8 @@ public:
     ~CAcemFreeCurveCanvas();
     
     void drawLine(int x1, int y1, int x2, int y2, int lineWidth, color lineColor, bool bUpdate = false);
-//    bool init();
+    bool init();
+    bool deinit(const int reason);
 };
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -36,6 +38,28 @@ CAcemFreeCurveCanvas::~CAcemFreeCurveCanvas()
 {
 }
 //+------------------------------------------------------------------+
+
+bool CAcemFreeCurveCanvas::init()
+{
+    if (!CAcemWindowFillCanvas::init()) {
+        return false;
+    }
+
+    string strCanvasRcname = ResourceName();
+    setParamString(ChartID(), ACEM_PARAM_FREE_CUREVE_CANVAS_RCNAME, strCanvasRcname);
+    
+    return true;
+}
+
+bool CAcemFreeCurveCanvas::deinit(const int reason)
+{
+    if (!CAcemWindowFillCanvas::deinit(reason)) {
+        return false;
+    }
+    ObjectDelete(ChartID(), ACEM_PARAM_FREE_CUREVE_CANVAS_RCNAME);
+    
+    return true;
+}
 
 void CAcemFreeCurveCanvas::drawLine(int x1, int y1, int x2, int y2, int lineWidth, color lineColor, bool bUpdate)
 {
