@@ -511,7 +511,7 @@ int CAcemSyncChartPos::getHideWidth()
     int posX = (int)ObjectGetInteger(ChartID(), m_strShowLineName, OBJPROP_XDISTANCE);
     int chartScale = (int)ChartGetInteger(ChartID(), CHART_SCALE);
     int step = int(1 << chartScale);
-    int hideWidth = m_wndWidth - posX - (step / 2) - 2;
+    int hideWidth = m_wndWidth - posX - MathRound(step / 2.0) - 1;
 
     return hideWidth;
 }
