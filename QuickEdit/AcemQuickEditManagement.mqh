@@ -16,6 +16,7 @@
 #include <Acem/QuickEdit/AcemQuickDeselect.mqh>
 #include <Acem/QuickEdit/AcemQuickRectangle.mqh>
 #include <Acem/QuickEdit/AcemContinuousLine.mqh>
+#include <Acem/QuickEdit/AcemQuickChangePeriod.mqh>
 
 class CAcemQuickEditManagement : public CAcemBase
 {
@@ -39,7 +40,7 @@ protected:
     CAcemQuickDeselect m_quickDeselect;
     CAcemQuickRectangle m_quickRectangle;
     CAcemContinuousLine m_quickContinuousLine;
-
+    CAcemQuickChangePeriod m_quickChangePeriod;
 public:
     CAcemQuickEditManagement();
     ~CAcemQuickEditManagement();
@@ -84,6 +85,7 @@ bool CAcemQuickEditManagement::OnKeyDown(int id, long lparam, double dparam, str
         m_quickDeselect.OnKeyDown(id, lparam, dparam, sparam);
         m_quickRectangle.OnKeyDown(id, lparam, dparam, sparam);
         m_quickContinuousLine.OnKeyDown(id, lparam, dparam, sparam);
+        m_quickChangePeriod.OnKeyDown(id, lparam, dparam, sparam);
     }
     
     return true;
