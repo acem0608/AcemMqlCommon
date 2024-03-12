@@ -37,7 +37,9 @@ CAcemAutoActive::~CAcemAutoActive()
 
 bool CAcemAutoActive::OnMouseMove(int id, long lparam, double dparam, string sparam)
 {
-    ChartSetInteger(ChartID(), CHART_BRING_TO_TOP, true);
+    if (!ChartGetInteger(ChartID(), CHART_BRING_TO_TOP)) {
+        ChartSetInteger(ChartID(), CHART_BRING_TO_TOP, true);
+    }
 
     return true;
 }

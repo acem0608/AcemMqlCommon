@@ -66,6 +66,12 @@ bool CAcemVlineCanvas::init()
         int chartWidth = (int)ChartGetInteger(ChartID(), CHART_WIDTH_IN_PIXELS);
         posX = (chartWidth / 5) * 4;
     }
+
+    int tmpX;
+    if (shiftOnGridX(ChartID(), posX, tmpX)) {
+        posX = tmpX;
+    }
+    
     move(posX);
     setParamString(ChartID(), ACEM_PARAM_SYNC_POS_LINE_RCNAME, m_rcname);
     debugPrint(__FUNCTION__ + " m_rcname: " + m_rcname);
