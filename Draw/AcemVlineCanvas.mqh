@@ -24,6 +24,7 @@ public:
     ~CAcemVlineCanvas();
     virtual bool init();
     bool deinit(const int reason);
+    virtual void Destroy(void);
     void setLineWidth(int width) { m_lineWidth = width; };
     int getLineWidth() { return m_lineWidth; };
     bool resize(bool bUpdate);
@@ -86,11 +87,6 @@ bool CAcemVlineCanvas::deinit(const int reason)
 
     switch (reason) {
         case REASON_REMOVE:
-            {
-                ObjectDelete(ChartID(), ACEM_PARAM_SYNC_POS);
-                ObjectDelete(ChartID(), ACEM_PARAM_SYNC_POS_LINE_RCNAME);
-            }
-            break;
         case REASON_PROGRAM:
         case REASON_CHARTCLOSE:
         case REASON_CLOSE:
@@ -106,6 +102,13 @@ bool CAcemVlineCanvas::deinit(const int reason)
             break;
     }
     return true;
+}
+
+void CAcemVlineCanvas::Destroy()
+{
+    CAcemBaseCanvas::Destroy();
+    ObjectDelete(ChartID(), ACEM_PARAM_SYNC_POS);
+    ObjectDelete(ChartID(), ACEM_PARAM_SYNC_POS_LINE_RCNAME);
 }
 
 bool CAcemVlineCanvas::resize(bool bUpdate)

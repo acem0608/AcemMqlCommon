@@ -24,6 +24,7 @@ public:
     void drawLine(int x1, int y1, int x2, int y2, int lineWidth, color lineColor, bool bUpdate = false);
     bool init();
     bool deinit(const int reason);
+    virtual void Destroy(void);
 };
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -56,9 +57,15 @@ bool CAcemFreeCurveCanvas::deinit(const int reason)
     if (!CAcemWindowFillCanvas::deinit(reason)) {
         return false;
     }
-    ObjectDelete(ChartID(), ACEM_PARAM_FREE_CUREVE_CANVAS_RCNAME);
     
     return true;
+}
+
+void CAcemFreeCurveCanvas::Destroy()
+{
+    CAcemWindowFillCanvas::Destroy();
+
+    ObjectDelete(ChartID(), ACEM_PARAM_FREE_CUREVE_CANVAS_RCNAME);
 }
 
 void CAcemFreeCurveCanvas::drawLine(int x1, int y1, int x2, int y2, int lineWidth, color lineColor, bool bUpdate)

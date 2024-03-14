@@ -21,6 +21,7 @@ public:
     virtual bool init();
     virtual void resize();
     virtual void minimize();
+    virtual void Destroy();
 };
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -43,6 +44,11 @@ bool CAcemWindowFillCanvas::init()
     bool retc = CAcemBaseCanvas::init(0, 0, width, height);
     ObjectSetInteger(ChartID(), m_canvasName, OBJPROP_SELECTABLE, false);
     return retc;
+}
+
+void CAcemWindowFillCanvas::Destroy()
+{
+    CAcemBaseCanvas::Destroy();
 }
 
 void CAcemWindowFillCanvas::resize()
