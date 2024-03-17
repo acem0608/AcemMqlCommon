@@ -8,8 +8,6 @@
 #property version "1.00"
 #property strict
 
-#define ACEM_IDENTIFER "ACEM"
-
 class CAcemBase
 {
 private:

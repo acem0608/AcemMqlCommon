@@ -171,10 +171,7 @@ string CAcemQuickEditBase::getNewObjName()
     datetime currentTime = TimeLocal();
     ulong num = (ulong)currentTime;
     string strHexNum = convIntToHexString(num);
-/*
-    do {
-        objName = m_objNamePrefix + IntegerToString(m_objNameIndex++, 5, '0')+ " " + ACEM_IDENTIFER + " " + IntegerToString(ChartID());
-    } while (ObjectFind(ChartID(), objName) >= 0);
-*/
+    objName = ACEM_IDENTIFER + " " + m_objNamePrefix + " " + strHexNum;
+
     return objName;
 }
