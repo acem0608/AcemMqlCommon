@@ -42,6 +42,7 @@ protected:
     CAcemQuickRectangle m_quickRectangle;
     CAcemContinuousLine m_quickContinuousLine;
     CAcemQuickChangePeriod m_quickChangePeriod;
+    CAcemQuickSLline m_quickSLline;
 public:
     CAcemQuickEditManagement();
     ~CAcemQuickEditManagement();
@@ -87,6 +88,7 @@ bool CAcemQuickEditManagement::OnKeyDown(int id, long lparam, double dparam, str
         m_quickRectangle.OnKeyDown(id, lparam, dparam, sparam);
         m_quickContinuousLine.OnKeyDown(id, lparam, dparam, sparam);
         m_quickChangePeriod.OnKeyDown(id, lparam, dparam, sparam);
+        m_quickSLline.OnKeyDown(id, lparam, dparam, sparam);
     }
     
     return true;
@@ -102,6 +104,7 @@ bool CAcemQuickEditManagement::OnMouseMove(int id, long lparam, double dparam, s
     m_quickDeselect.OnMouseMove(id, lparam, dparam, sparam);
     m_quickRectangle.OnMouseMove(id, lparam, dparam, sparam);
     m_quickContinuousLine.OnMouseMove(id, lparam, dparam, sparam);
+    m_quickSLline.OnMouseMove(id, lparam, dparam, sparam);
 
     return true;
 }
@@ -116,6 +119,7 @@ bool CAcemQuickEditManagement::OnObjectCreate(int id, long lparam, double dparam
     m_quickDeselect.OnObjectCreate(id, lparam, dparam, sparam);
     m_quickRectangle.OnObjectCreate(id, lparam, dparam, sparam);
     m_quickContinuousLine.OnObjectCreate(id, lparam, dparam, sparam);
+    m_quickSLline.OnObjectCreate(id, lparam, dparam, sparam);
 
     return true;
 }
@@ -130,6 +134,7 @@ bool CAcemQuickEditManagement::OnObjectChange(int id, long lparam, double dparam
     m_quickDeselect.OnObjectChange(id, lparam, dparam, sparam);
     m_quickRectangle.OnObjectChange(id, lparam, dparam, sparam);
     m_quickContinuousLine.OnObjectChange(id, lparam, dparam, sparam);
+    m_quickSLline.OnObjectChange(id, lparam, dparam, sparam);
 
     return true;
 }
@@ -144,6 +149,7 @@ bool CAcemQuickEditManagement::OnObjectDelete(int id, long lparam, double dparam
     m_quickDeselect.OnObjectDelete(id, lparam, dparam, sparam);
     m_quickRectangle.OnObjectDelete(id, lparam, dparam, sparam);
     m_quickContinuousLine.OnObjectDelete(id, lparam, dparam, sparam);
+    m_quickSLline.OnObjectDelete(id, lparam, dparam, sparam);
 
     return true;
 }
@@ -158,6 +164,7 @@ bool CAcemQuickEditManagement::OnChartClick(int id, long lparam, double dparam, 
     m_quickDeselect.OnChartClick(id, lparam, dparam, sparam);
     m_quickRectangle.OnChartClick(id, lparam, dparam, sparam);
     m_quickContinuousLine.OnChartClick(id, lparam, dparam, sparam);
+    m_quickSLline.OnChartClick(id, lparam, dparam, sparam);
 
     return true;
 }
@@ -172,6 +179,7 @@ bool CAcemQuickEditManagement::OnObjectClick(int id, long lparam, double dparam,
     m_quickDeselect.OnObjectClick(id, lparam, dparam, sparam);
     m_quickRectangle.OnObjectClick(id, lparam, dparam, sparam);
     m_quickContinuousLine.OnObjectClick(id, lparam, dparam, sparam);
+    m_quickSLline.OnObjectClick(id, lparam, dparam, sparam);
 
     return true;
 }
@@ -186,6 +194,7 @@ bool CAcemQuickEditManagement::OnObjectDrag(int id, long lparam, double dparam, 
     m_quickDeselect.OnObjectDrag(id, lparam, dparam, sparam);
     m_quickRectangle.OnObjectDrag(id, lparam, dparam, sparam);
     m_quickContinuousLine.OnObjectDrag(id, lparam, dparam, sparam);
+    m_quickSLline.OnObjectDrag(id, lparam, dparam, sparam);
 
     return true;
 }
@@ -200,6 +209,7 @@ bool CAcemQuickEditManagement::OnObjectEndEdit(int id, long lparam, double dpara
     m_quickDeselect.OnObjectEndEdit(id, lparam, dparam, sparam);
     m_quickRectangle.OnObjectEndEdit(id, lparam, dparam, sparam);
     m_quickContinuousLine.OnObjectEndEdit(id, lparam, dparam, sparam);
+    m_quickSLline.OnObjectEndEdit(id, lparam, dparam, sparam);
 
     return true;
 }
@@ -214,6 +224,7 @@ bool CAcemQuickEditManagement::OnChartChange(int id, long lparam, double dparam,
     m_quickDeselect.OnChartChange(id, lparam, dparam, sparam);
     m_quickRectangle.OnChartChange(id, lparam, dparam, sparam);
     m_quickContinuousLine.OnChartChange(id, lparam, dparam, sparam);
+    m_quickSLline.OnChartChange(id, lparam, dparam, sparam);
 
     return true;
 }

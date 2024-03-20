@@ -11,6 +11,7 @@
 class CAcemBase
 {
 private:
+
 public:
     CAcemBase();
     ~CAcemBase();
