@@ -9,6 +9,7 @@
 #property strict
 
 #include <Acem/QuickEdit/AcemQuickEditBase.mqh>
+
 input string dmy1 = "";//-- 水平線の設定 --
 input eInputKeyCode KEY_HLINE = ACEM_KEYCODE_H;//　　水平線の入力キー
 input color HLINE_COLOR = 0x00FFFFFF;//　　色

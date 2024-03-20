@@ -17,6 +17,7 @@
 #include <Acem/QuickEdit/AcemQuickRectangle.mqh>
 #include <Acem/QuickEdit/AcemContinuousLine.mqh>
 #include <Acem/QuickEdit/AcemQuickChangePeriod.mqh>
+#include <Acem/QuickEdit/AcemQuickSLline.mqh>
 
 class CAcemQuickEditManagement : public CAcemBase
 {
