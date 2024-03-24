@@ -9,6 +9,7 @@
 #property strict
 
 #include <Acem/QuickEdit/AcemQuickEditBase.mqh>
+
 input string dmy1 = "";//-- 水平線の設定 --
 input eInputKeyCode KEY_HLINE = ACEM_KEYCODE_H;//　　水平線の入力キー
 input color HLINE_COLOR = 0x00FFFFFF;//　　色
@@ -50,7 +51,6 @@ bool CAcemQuickHline::OnKeyDown(int id, long lparam, double dparam, string spara
         string objName = getNewObjName();
         ObjectCreate(ChartID(), objName, OBJ_HLINE, 0, m_time, m_price);
         setDefalutProp(objName);
-        EventChartCustom(ChartID(), 0, 0, 0.0, ACEM_SYNC_OTHER_CHART_ADD+objName);
         ChartRedraw(ChartID());
         m_price = 0.0;
         m_time = 0;

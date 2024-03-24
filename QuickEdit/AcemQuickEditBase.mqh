@@ -140,7 +140,7 @@ void CAcemQuickEditBase::setMouseToTimePrice(long lparam, double dparam)
     int windowNo;
     datetime mouseTime;
     double mousePrice;
-    if (!ChartXYToTimePrice(ChartID(), lparam, dparam, windowNo, mouseTime, mousePrice))
+    if (!ChartXYToTimePrice(ChartID(), (int)lparam, (int)dparam, windowNo, mouseTime, mousePrice))
     {
         return;
         m_price = 0.0;
@@ -168,8 +168,12 @@ bool CAcemQuickEditBase::setDefalutProp(string objName)
 string CAcemQuickEditBase::getNewObjName()
 {
     string objName;
+    datetime currentTime = TimeLocal();
     do {
-        objName = m_objNamePrefix + IntegerToString(m_objNameIndex++, 5, '0')+ " " + ACEM_IDENTIFER + " " + IntegerToString(ChartID());
+        ulong num = (ulong)currentTime;
+        string strHexNum = convIntToHexString(num);
+        objName = ACEM_IDENTIFER + " " + m_objNamePrefix + " " + strHexNum;
+        currentTime++;
     } while (ObjectFind(ChartID(), objName) >= 0);
 
     return objName;
