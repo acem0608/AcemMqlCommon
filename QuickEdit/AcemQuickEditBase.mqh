@@ -169,9 +169,12 @@ string CAcemQuickEditBase::getNewObjName()
 {
     string objName;
     datetime currentTime = TimeLocal();
-    ulong num = (ulong)currentTime;
-    string strHexNum = convIntToHexString(num);
-    objName = ACEM_IDENTIFER + " " + m_objNamePrefix + " " + strHexNum;
+    do {
+        ulong num = (ulong)currentTime;
+        string strHexNum = convIntToHexString(num);
+        objName = ACEM_IDENTIFER + " " + m_objNamePrefix + " " + strHexNum;
+        currentTime++;
+    } while (ObjectFind(ChartID(), objName) >= 0);
 
     return objName;
 }
