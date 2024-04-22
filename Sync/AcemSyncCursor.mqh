@@ -65,12 +65,14 @@ bool CAcemSyncCursor::OnMouseMove(int id, long lparam, double dparam, string spa
     for (toChartId = ChartFirst();toChartId != -1; toChartId = ChartNext(toChartId)) {
         if (toChartId == ChartID()) {
             ObjectSetInteger(toChartId, ACEM_SYNC_CURSOR_CANVAS, OBJPROP_TIMEFRAMES, OBJ_NO_PERIODS);
+            ObjectSetInteger(toChartId, ACEM_FREE_CUREVE_ICON_NAME, OBJPROP_TIME, OBJ_NO_PERIODS);
             ChartRedraw(toChartId);
         } else {
             if (!ChartGetInteger(ChartID(), CHART_BRING_TO_TOP)) {
                 ChartSetInteger(ChartID(), CHART_BRING_TO_TOP, true);
             }
 
+            ObjectSetInteger(toChartId, ACEM_FREE_CUREVE_ICON_NAME, OBJPROP_TIME, OBJ_ALL_PERIODS);
             if (ObjectSetInteger(toChartId, ACEM_SYNC_CURSOR_CANVAS, OBJPROP_TIMEFRAMES, OBJ_ALL_PERIODS)) {
                 if (ChartTimePriceToXY(toChartId, 0, time, price, posX, posY)) {
                     if (convTimeToPosX(toChartId, time, false, posX)) {
