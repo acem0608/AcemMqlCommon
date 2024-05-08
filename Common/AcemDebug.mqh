@@ -26,6 +26,8 @@
 // #import
 //+------------------------------------------------------------------+
 
+//#define _ACEM_DEBUG
+
 void debugPrint(string strMsg)
 {
 #ifdef _ACEM_DEBUG

@@ -96,6 +96,7 @@ CAcemSyncChartPos::~CAcemSyncChartPos()
 void CAcemSyncChartPos::init()
 {
     debugPrint(__FUNCTION__ + " Start");
+debugPrint(__FUNCTION__ + "start leftIndex time  " + TimeToString(iTime(NULL, 0, m_leftIndex)) + " " + TimeToString(iTime(NULL, 0, WindowFirstVisibleBar())));
     m_isNeedRefresh = true;
     m_bFailedMoveBaseLine = false;
     m_bFailedSyncChart = false;
@@ -136,6 +137,17 @@ void CAcemSyncChartPos::init()
             ObjectCreate(ChartID(), m_strHideLineNmae, OBJ_VLINE, 0, baseTime, 0, 0);
             setHideLineProp();
         }
+    } else {
+        baseTime = (datetime)ObjectGetInteger(ChartID(), m_strHideLineNmae, OBJPROP_TIME, 0);
+    }
+    
+    syncChart();
+/*
+    if (ObjectFind(ChartID(), m_strHideLineNmae) < 0) {
+        if (getBaseTime(baseTime)) {
+            ObjectCreate(ChartID(), m_strHideLineNmae, OBJ_VLINE, 0, baseTime, 0, 0);
+            setHideLineProp();
+        }
     }
 
     if (getBaseTime(baseTime)) {
@@ -146,6 +158,8 @@ void CAcemSyncChartPos::init()
             }
         }
     }
+*/
+debugPrint(__FUNCTION__ + "end leftIndex time  " + TimeToString(iTime(NULL, 0, m_leftIndex)) + " " + TimeToString(iTime(NULL, 0, WindowFirstVisibleBar())));
 
     createTimeLabel();
     if (bRebuild) {
@@ -294,7 +308,7 @@ bool CAcemSyncChartPos::OnChartChange(int id, long lparam, double dparam, string
     // スクロール
     int leftIndex = WindowFirstVisibleBar();
     if (m_leftIndex != leftIndex && ChartGetInteger(ChartID(), CHART_BRING_TO_TOP)) {
-        debugPrint(__FUNCTION__ + " Scrolle start");
+        debugPrint(__FUNCTION__ + " Scrolle start " + TimeToString(iTime(NULL, 0, m_leftIndex)) + " " + TimeToString(iTime(NULL, 0, leftIndex)));
         if (!isChartReady(ChartID())) {
             debugPrint(__FUNCTION__ + " isChartReady: false");
         }
@@ -477,6 +491,7 @@ bool CAcemSyncChartPos::syncChart()
     int shift = basePosIndex - baseTimeIndex;
 
     ChartNavigate(ChartID(), CHART_CURRENT_POS, shift);
+    m_leftIndex = WindowFirstVisibleBar();
     debugPrint(__FUNCTION__ + " true End");
     m_bFailedSyncChart = false;
     return true;
