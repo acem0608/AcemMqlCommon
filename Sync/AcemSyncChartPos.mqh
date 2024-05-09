@@ -97,6 +97,7 @@ void CAcemSyncChartPos::init()
 {
     debugPrint(__FUNCTION__ + " Start");
 debugPrint(__FUNCTION__ + "start leftIndex time  " + TimeToString(iTime(NULL, 0, m_leftIndex)) + " " + TimeToString(iTime(NULL, 0, WindowFirstVisibleBar())));
+debugPrint(__FUNCTION__ + " 隠し基準線：" + (datetime)ObjectGetInteger(ChartID(), ACEM_SYNC_HIDE_BASE_LINE_NAME, OBJPROP_TIME, 0));
     m_isNeedRefresh = true;
     m_bFailedMoveBaseLine = false;
     m_bFailedSyncChart = false;
@@ -159,7 +160,13 @@ debugPrint(__FUNCTION__ + "start leftIndex time  " + TimeToString(iTime(NULL, 0,
         }
     }
 */
-debugPrint(__FUNCTION__ + "end leftIndex time  " + TimeToString(iTime(NULL, 0, m_leftIndex)) + " " + TimeToString(iTime(NULL, 0, WindowFirstVisibleBar())));
+if (!isChartReady(ChartID())) {
+    debugPrint(__FUNCTION__ + " isChartReady: false");
+} else {
+    debugPrint(__FUNCTION__ + " isChartReady: true");
+}
+debugPrint(__FUNCTION__ + " end leftIndex time  " + TimeToString(iTime(NULL, 0, m_leftIndex)) + " " + TimeToString(iTime(NULL, 0, WindowFirstVisibleBar())));
+debugPrint(__FUNCTION__ + " 隠し基準線：" + (datetime)ObjectGetInteger(ChartID(), ACEM_SYNC_HIDE_BASE_LINE_NAME, OBJPROP_TIME, 0));
 
     createTimeLabel();
     if (bRebuild) {
@@ -244,14 +251,25 @@ bool CAcemSyncChartPos::OnObjectDrag(int id, long lparam, double dparam, string 
 bool CAcemSyncChartPos::OnChartChange(int id, long lparam, double dparam, string sparam)
 {
     debugPrint(__FUNCTION__ + " Start");
-
+/*
     if (!isChartReady(ChartID())) {
         debugPrint(__FUNCTION__ + " isChartReady: false");
+    } else {
+       debugPrint(__FUNCTION__ + " isChartReady: true");
     }
-
+*/
     if (ChartGetInteger(ChartID(), CHART_BRING_TO_TOP) == false) {
         debugPrint(__FUNCTION__ + " CHART_BRING_TO_TOP false end");
         return true;
+    }
+
+    if (m_bFailedSyncChart) {
+        if (syncChart()) {
+            m_bFailedSyncChart = false;
+            m_isNeedRefresh = true;
+        } else {
+            return false;
+        }
     }
 
     // リサイズ
