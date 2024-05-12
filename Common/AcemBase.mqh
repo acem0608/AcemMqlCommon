@@ -28,7 +28,6 @@ public:
     virtual bool OnObjectEndEdit(int id, long lparam, double dparam, string sparam);
     virtual bool OnChartChange(int id, long lparam, double dparam, string sparam);
     virtual bool OnCustomEvent(int id, long lparam, double dparam, string sparam);
-
 };
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -100,7 +99,9 @@ bool CAcemBase::OnChartEvent(int id, long lparam, double dparam, string sparam)
         break;
     default:
         {
-            OnCustomEvent(id, lparam, dparam, sparam);
+            if (CHARTEVENT_CUSTOM <= id && id <= CHARTEVENT_CUSTOM_LAST) {
+                OnCustomEvent(id, lparam, dparam, sparam);
+            }
         }
         break;
     }

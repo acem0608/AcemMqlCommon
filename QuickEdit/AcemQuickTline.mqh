@@ -60,6 +60,8 @@ bool CAcemQuickTline::init(bool bDel)
 {
     if (m_pTline != NULL) {
         if (bDel) {
+            string objName = m_Tline.GetString(OBJPROP_NAME);
+            EventChartCustom(ChartID(), CHARTEVENT_OBJECT_DELETE, 0, 0.0,  objName);
             m_Tline.Delete();
         } else {
             m_Tline.Detach();
@@ -98,6 +100,8 @@ bool CAcemQuickTline::OnMouseMove(int id, long lparam, double dparam, string spa
 
     if (m_pTline != NULL) {
         m_Tline.SetPoint(1, m_time, m_price);
+        string objName = m_Tline.GetString(OBJPROP_NAME);
+        EventChartCustom(ChartID(), CHARTEVENT_OBJECT_CHANGE, 0, 0.0,  objName);
         ChartRedraw(ChartID());
     }
     return true;
@@ -108,6 +112,8 @@ bool CAcemQuickTline::OnChartClick(int id, long lparam, double dparam, string sp
     if (m_pTline != NULL) {
         m_Tline.Selected(false);
 //        EventChartCustom(ChartID(), 0, 0, 0.0, ACEM_SYNC_OTHER_CHART_ADD + objName);
+        string objName = m_Tline.GetString(OBJPROP_NAME);
+        EventChartCustom(ChartID(), CHARTEVENT_OBJECT_CHANGE, 0, 0.0,  objName);
         init(false);
         m_pTline = NULL;
         ChartRedraw(ChartID());
