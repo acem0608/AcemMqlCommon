@@ -75,6 +75,7 @@ public:
     void syncOtherChart(datetime newTime);
     void moveSupportObject();
     void createTimeLabel();
+    void setChartRange();
 };
 
 //+------------------------------------------------------------------+
@@ -96,8 +97,7 @@ CAcemSyncChartPos::~CAcemSyncChartPos()
 void CAcemSyncChartPos::init()
 {
     debugPrint(__FUNCTION__ + " Start");
-debugPrint(__FUNCTION__ + "start leftIndex time  " + TimeToString(iTime(NULL, 0, m_leftIndex)) + " " + TimeToString(iTime(NULL, 0, WindowFirstVisibleBar())));
-debugPrint(__FUNCTION__ + " 隠し基準線：" + (datetime)ObjectGetInteger(ChartID(), ACEM_SYNC_HIDE_BASE_LINE_NAME, OBJPROP_TIME, 0));
+
     m_isNeedRefresh = true;
     m_bFailedMoveBaseLine = false;
     m_bFailedSyncChart = false;
@@ -110,6 +110,9 @@ debugPrint(__FUNCTION__ + " 隠し基準線：" + (datetime)ObjectGetInteger(Cha
     m_hideRightCanvas.init();
     if (!IS_HIDE_RIGHT) {
         m_hideRightCanvas.resize(1, 1);
+        ChartSetInteger(ChartID(), CHART_SCALEFIX, false);
+    } else {
+        ChartSetInteger(ChartID(), CHART_SCALEFIX, true);
     }
 
     long timeFrameValue;
@@ -143,31 +146,7 @@ debugPrint(__FUNCTION__ + " 隠し基準線：" + (datetime)ObjectGetInteger(Cha
     }
     
     syncChart();
-/*
-    if (ObjectFind(ChartID(), m_strHideLineNmae) < 0) {
-        if (getBaseTime(baseTime)) {
-            ObjectCreate(ChartID(), m_strHideLineNmae, OBJ_VLINE, 0, baseTime, 0, 0);
-            setHideLineProp();
-        }
-    }
-
-    if (getBaseTime(baseTime)) {
-        datetime posXTime;
-        if (m_syncLineCnavas.getCurrentTime(posXTime)) {
-            if (baseTime != posXTime) {
-                syncChart();
-            }
-        }
-    }
-*/
-if (!isChartReady(ChartID())) {
-    debugPrint(__FUNCTION__ + " isChartReady: false");
-} else {
-    debugPrint(__FUNCTION__ + " isChartReady: true");
-}
-debugPrint(__FUNCTION__ + " end leftIndex time  " + TimeToString(iTime(NULL, 0, m_leftIndex)) + " " + TimeToString(iTime(NULL, 0, WindowFirstVisibleBar())));
-debugPrint(__FUNCTION__ + " 隠し基準線：" + (datetime)ObjectGetInteger(ChartID(), ACEM_SYNC_HIDE_BASE_LINE_NAME, OBJPROP_TIME, 0));
-
+    
     createTimeLabel();
     if (bRebuild) {
         rebuildObject();
@@ -251,13 +230,7 @@ bool CAcemSyncChartPos::OnObjectDrag(int id, long lparam, double dparam, string 
 bool CAcemSyncChartPos::OnChartChange(int id, long lparam, double dparam, string sparam)
 {
     debugPrint(__FUNCTION__ + " Start");
-/*
-    if (!isChartReady(ChartID())) {
-        debugPrint(__FUNCTION__ + " isChartReady: false");
-    } else {
-       debugPrint(__FUNCTION__ + " isChartReady: true");
-    }
-*/
+
     if (ChartGetInteger(ChartID(), CHART_BRING_TO_TOP) == false) {
         debugPrint(__FUNCTION__ + " CHART_BRING_TO_TOP false end");
         return true;
@@ -305,6 +278,7 @@ bool CAcemSyncChartPos::OnChartChange(int id, long lparam, double dparam, string
             m_timeFrame = timeFrame;
         }
         debugPrint(__FUNCTION__ + " TimeFrame end");
+        setChartRange();
         return true;
     }
 
@@ -510,9 +484,30 @@ bool CAcemSyncChartPos::syncChart()
 
     ChartNavigate(ChartID(), CHART_CURRENT_POS, shift);
     m_leftIndex = WindowFirstVisibleBar();
+
+    setChartRange();
+
     debugPrint(__FUNCTION__ + " true End");
     m_bFailedSyncChart = false;
     return true;
+}
+
+void CAcemSyncChartPos::setChartRange()
+{
+    if (IS_HIDE_RIGHT) {
+        int basePosX = m_syncLineCnavas.getPosX();
+        int basePosIndex;
+        convPosXToIndex(ChartID(), basePosX, basePosIndex);
+        int count = m_leftIndex - basePosIndex + 1;
+        int minIndex = iLowest(NULL, 0, MODE_LOW, count, basePosIndex);
+        double minPrice = iLow(NULL, PERIOD_CURRENT, minIndex);
+        int maxIndex = iHighest(NULL, 0, MODE_HIGH, count, basePosIndex);
+        double maxPrice = iHigh(NULL, PERIOD_CURRENT, maxIndex);
+        double offset = (maxPrice - minPrice) * 0.05;
+        ChartSetDouble(ChartID(), CHART_FIXED_MAX, maxPrice + offset);
+        ChartSetDouble(ChartID(), CHART_FIXED_MIN, minPrice - offset);
+    }
+
 }
 
 bool CAcemSyncChartPos::isSyncChart(long targetId)
@@ -544,7 +539,7 @@ int CAcemSyncChartPos::getHideWidth()
     int posX = (int)ObjectGetInteger(ChartID(), m_strShowLineName, OBJPROP_XDISTANCE);
     int chartScale = (int)ChartGetInteger(ChartID(), CHART_SCALE);
     int step = int(1 << chartScale);
-    int hideWidth = m_wndWidth - posX - MathRound(step / 2.0) - 1;
+    int hideWidth = int(m_wndWidth - posX - MathRound(step / 2.0) - 1);
 
     return hideWidth;
 }
