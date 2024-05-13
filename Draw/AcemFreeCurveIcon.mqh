@@ -22,7 +22,7 @@ public:
 
     bool init();
 
-    bool setIcon(eDrawFreeCurveMode mode);
+    bool setIcon(eDrawFreeCurveMode mode, uint drawColor);
 };
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -54,7 +54,7 @@ bool CAcemFreeCurveIcon::init()
     return true;
 }
 
-bool CAcemFreeCurveIcon::setIcon(eDrawFreeCurveMode mode)
+bool CAcemFreeCurveIcon::setIcon(eDrawFreeCurveMode mode, uint drawColor)
 {
     Erase();
 
@@ -78,6 +78,12 @@ bool CAcemFreeCurveIcon::setIcon(eDrawFreeCurveMode mode)
             0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
             0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000};
 
+        int index;
+        for (index = 0; index < 16 * 16; index++) {
+            if (aFig[index] == 0xFFFFFFFF) {
+                aFig[index] = drawColor;
+            }
+        }
         ArrayCopy(m_pixels, aFig);
         Update();
     }
@@ -102,6 +108,12 @@ bool CAcemFreeCurveIcon::setIcon(eDrawFreeCurveMode mode)
             0x00000000, 0x00000000, 0x00000000, 0xFF000000, 0xFFFFFFFF, 0xFF000000, 0xFFFFFFFF, 0xFF000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
             0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xFF000000, 0xFFFFFFFF, 0xFF000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000};
 
+        int index;
+        for (index = 0; index < 16 * 16; index++) {
+            if (aFig[index] == 0xFFFFFFFF) {
+                aFig[index] = drawColor;
+            }
+        }
         ArrayCopy(m_pixels, aFig);
         Update();
     }
@@ -126,6 +138,12 @@ bool CAcemFreeCurveIcon::setIcon(eDrawFreeCurveMode mode)
             0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
             0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000};
 
+        int index;
+        for (index = 0; index < 16 * 16; index++) {
+            if (aFig[index] == 0xFFFFFFFF) {
+                aFig[index] = drawColor;
+            }
+        }
         ArrayCopy(m_pixels, aFig);
         Update();
     }
@@ -150,6 +168,12 @@ bool CAcemFreeCurveIcon::setIcon(eDrawFreeCurveMode mode)
         0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xFF000000, 0xFF000000, 0x00000000, 0x00000000,
         0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000};
 
+        int index;
+        for (index = 0; index < 16 * 16; index++) {
+            if (aFig[index] == 0xFFFFFFFF) {
+                aFig[index] = drawColor;
+            }
+        }
         ArrayCopy(m_pixels, aFig);
         Update();
     }
@@ -174,6 +198,12 @@ bool CAcemFreeCurveIcon::setIcon(eDrawFreeCurveMode mode)
             0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF, 0xFF000000, 0xFFFFFFFF,
             0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF, 0xFF000000};
 
+        int index;
+        for (index = 0; index < 16 * 16; index++) {
+            if (aFig[index] == 0xFFFFFFFF) {
+                aFig[index] = drawColor;
+            }
+        }
         ArrayCopy(m_pixels, aFig);
         Update();
     }
