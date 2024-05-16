@@ -160,6 +160,7 @@ void CAcemSyncChartPos::init()
 void CAcemSyncChartPos::deinit(const int reason)
 {
     debugPrint(__FUNCTION__ + " Start");
+    ChartSetInteger(ChartID(), CHART_SCALEFIX, false);
     m_syncLineCnavas.deinit(reason);
     m_hideRightCanvas.deinit(reason);
     switch (reason) {
