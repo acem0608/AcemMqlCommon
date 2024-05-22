@@ -133,6 +133,8 @@ void CAcemSyncChartPos::init()
 
     m_syncLineCnavas.init();
     m_syncLineCnavas.fill(ColorToARGB(ACEM_SYNC_POS_BASE_LINE_COLOR, 255));
+    ObjectSetInteger(ChartID(), ACEM_SYNC_SHOW_BASE_LINE_NAME, OBJPROP_ZORDER, 10);
+
     //    m_syncLineCnavas.Update();
 
     datetime baseTime = datetime(0);
@@ -363,6 +365,7 @@ bool CAcemSyncChartPos::OnObjectDelete(int id, long lparam, double dparam, strin
 
     if (sparam == ACEM_SYNC_SHOW_BASE_LINE_NAME) {
         if (ObjectCreate(ChartID(), ACEM_SYNC_SHOW_BASE_LINE_NAME, OBJ_BITMAP_LABEL, 0, 0, 0)) {
+            ObjectSetInteger(ChartID(), ACEM_SYNC_SHOW_BASE_LINE_NAME, OBJPROP_ZORDER, 10);
             string rcname;
             if (getParamString(ChartID(), ACEM_PARAM_SYNC_POS_LINE_RCNAME, rcname)) {
                 ObjectSetString(ChartID(), ACEM_SYNC_SHOW_BASE_LINE_NAME, OBJPROP_BMPFILE, rcname);
@@ -645,15 +648,16 @@ void CAcemSyncChartPos::createTimeLabel()
 {
     if (ObjectFind(ChartID(), ACEM_SYNC_LINE_TIME_LABEL) < 0) {
         ObjectCreate(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJ_LABEL, 0, 0, 0);
-        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_COLOR, clrYellow);          // 色設定
-        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_BACK, false);               // オブジェクトの背景表示設定
-        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_SELECTABLE, true);          // オブジェクトの選択可否設定
-        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_SELECTED, false);           // オブジェクトの選択状態
-        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_HIDDEN, false);             // オブジェクトリスト表示設定
-        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_FONTSIZE, 10);              // フォントサイズ
-        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_CORNER, CORNER_LEFT_LOWER); // コーナーアンカー設定
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_COLOR, clrYellow);           // 色設定
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_BACK, false);                // オブジェクトの背景表示設定
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_SELECTABLE, true);           // オブジェクトの選択可否設定
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_SELECTED, false);            // オブジェクトの選択状態
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_HIDDEN, false);              // オブジェクトリスト表示設定
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_FONTSIZE, 10);               // フォントサイズ
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_CORNER, CORNER_LEFT_LOWER);  // コーナーアンカー設定
         ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_ANCHOR, ANCHOR_RIGHT_LOWER);
-        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_YDISTANCE, 0); // Y座標
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_YDISTANCE, 0);               // Y座標
+        ObjectSetInteger(ChartID(), ACEM_SYNC_LINE_TIME_LABEL, OBJPROP_ZORDER, 10);             // Zオーダー
     }
 
     setBaseTimeLabelString();
