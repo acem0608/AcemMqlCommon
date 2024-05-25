@@ -51,6 +51,9 @@ bool CAcemQuickHline::OnKeyDown(int id, long lparam, double dparam, string spara
         string objName = getNewObjName();
         ObjectCreate(ChartID(), objName, OBJ_HLINE, 0, m_time, m_price);
         setDefalutProp(objName);
+#ifdef __MQL4__
+        EventChartCustom(ChartID(), CHARTEVENT_OBJECT_CREATE, 0, 0, objName);
+#endif
         ChartRedraw(ChartID());
         m_price = 0.0;
         m_time = 0;
