@@ -69,7 +69,9 @@ bool CAcemSyncCursor::OnMouseMove(int id, long lparam, double dparam, string spa
             ChartRedraw(toChartId);
         } else {
             if (!ChartGetInteger(ChartID(), CHART_BRING_TO_TOP)) {
-                ChartSetInteger(ChartID(), CHART_BRING_TO_TOP, true);
+                if (!isCtrlDown(sparam)) {
+                    ChartSetInteger(ChartID(), CHART_BRING_TO_TOP, true);
+                }
             }
 
             ObjectSetInteger(toChartId, ACEM_FREE_CUREVE_ICON_NAME, OBJPROP_TIME, OBJ_ALL_PERIODS);
